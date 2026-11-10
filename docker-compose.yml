@@ -1,0 +1,47 @@
+services:
+  marmalade:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: marmalade
+    restart: unless-stopped
+    ports:
+      # Bind to host port 4120
+      - "4120:4120"
+    volumes:
+      # Persistent local database volume
+      - ./data:/app/data
+    environment:
+      - SPROUT_PORT=4120
+      - SPROUT_HOST=0.0.0.0
+      - SPROUT_DB_PATH=/app/data/sprout.db
+      - SETUP_TOKEN=${SETUP_TOKEN:-}
+      - SESSION_SECRET=${SESSION_SECRET:-}
+      - OLLAMA_BASE_URL=http://host.docker.internal:11434
+      - OLLAMA_MODEL=llama3.2
+      # Commercial provider keys (optional; only needed if using these models)
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - OPENAI_ZDR_APPROVED=${OPENAI_ZDR_APPROVED:-false}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      - BRAVE_SEARCH_API_KEY=${BRAVE_SEARCH_API_KEY:-}
+    extra_hosts:
+      # Allows the container to access local Ollama running on the host machine
+      - "host.docker.internal:host-gateway"
+
+  # Optional private search adapter: docker compose --profile research up -d
+  searxng:
+    image: searxng/searxng:latest
+    profiles: [research]
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8080:8080"
+    volumes:
+      - ./config/searxng.yml:/etc/searxng/settings.yml:ro
+    environment:
+      - SEARXNG_BASE_URL=http://localhost:8080/
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - SETGID
+      - SETUID

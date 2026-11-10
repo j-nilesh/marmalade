@@ -1,0 +1,43 @@
+# fly.example.toml — Turnkey Fly.io configuration for Marmalade
+#
+# To deploy your own family instance:
+#   1. Copy this file: cp fly.example.toml fly.toml
+#   2. Choose a unique app name in fly.toml (e.g. app = "smith-family-marmalade")
+#   3. Create your persistent SQLite volume: fly volumes create marmalade_data --size 1
+#   4. Deploy: fly deploy
+
+app = "my-family-marmalade"
+primary_region = "iad"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  NODE_ENV = "production"
+  SPROUT_PORT = "4120"
+  SPROUT_HOST = "0.0.0.0"
+  SPROUT_DB_PATH = "/app/data/marmalade.db"
+
+[mounts]
+  source = "marmalade_data"
+  destination = "/app/data"
+
+[http_service]
+  internal_port = 4120
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  # Keeping min_machines_running = 1 ensures instant, zero cold-start responses for your child
+  min_machines_running = 1
+
+  [[http_service.checks]]
+    interval = "30s"
+    timeout = "5s"
+    grace_period = "10s"
+    method = "GET"
+    path = "/api/bootstrap"
+
+[[vm]]
+  memory = "512mb"
+  cpu_kind = "shared"
+  cpus = 1

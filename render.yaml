@@ -1,0 +1,20 @@
+# render.yaml — Render Blueprint for 1-Click Cloud Deployment with Persistent SQLite Disk
+services:
+  - type: web
+    name: sprout-core-family
+    runtime: docker
+    plan: starter
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: SPROUT_PORT
+        value: "4120"
+      - key: SPROUT_HOST
+        value: 0.0.0.0
+      - key: SPROUT_DB_PATH
+        value: /app/data/sprout.db
+    healthCheckPath: /api/bootstrap
+    disk:
+      name: sprout-sqlite-data
+      mountPath: /app/data
+      sizeGB: 1

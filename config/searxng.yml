@@ -1,0 +1,12 @@
+use_default_settings: true
+server:
+  secret_key: "replace-with-a-random-secret-before-sharing-this-service"
+  limiter: false
+  image_proxy: false
+search:
+  safe_search: 2
+  formats:
+    - html
+    - json
+ui:
+  static_use_hash: true

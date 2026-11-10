@@ -1,0 +1,21 @@
+# Node & Build artifacts
+node_modules/
+dist/
+.DS_Store
+*.log
+coverage/
+
+# Local family data & databases (NEVER commit family data or keys!)
+data/
+*.db
+*.db-shm
+*.db-wal
+
+# Environment & Secrets
+.env
+.env.*
+!.env.example
+.gstack/
+
+*.zip
+
