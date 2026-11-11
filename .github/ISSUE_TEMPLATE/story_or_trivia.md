@@ -11,9 +11,10 @@ assignees: ''
 - [ ] Trivia Pack (10 age-appropriate questions with answers and fun facts)
 
 ### Target Age Range
-- [ ] Ages 6–9
-- [ ] Ages 10–12
-- [ ] Ages 13–15
+- [ ] Ages 6–7
+- [ ] Ages 8–10
+- [ ] Ages 11–13
+- [ ] Ages 14–16
 
 ### Pack Concept / Description
 Describe the theme, topic, or narrative setting (e.g., Deep Sea Mysteries, Ancient Rome, Space Exploration).
@@ -32,6 +33,6 @@ Please provide a sample or draft of the content:
 - **Craft Coach Tip Example:**
 
 ### Child Privacy & Safety Check
-- [ ] Content is age-appropriate for children ages 6–15
+- [ ] Content is age-appropriate for children ages 6–16
 - [ ] No violent, gory, or sexually suggestive themes
 - [ ] No commercial brand endorsements or tracking hooks

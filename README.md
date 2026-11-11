@@ -45,7 +45,7 @@ Marmalade takes a different path:
 - **Natural Stopping Points**: Activities don't trap kids in infinite scroll loops. Conversations have clear caps (8 replies in Ask, 6 scenes in Story Relay, 10-question rounds in Trivia).
 - **Self-Hosted & Private**: Runs on your own hardware (Raspberry Pi, Mac, or home server) or private cloud instance. Your data never leaves your control.
 - **Offline & Zero-Cost Capable**: Supports local models via Ollama (`llama3.2`, `gemma2`) so you can run completely offline with zero API bills.
-- **Household Focus**: Built for one child per household today; multiple children are on the roadmap. Built for ages 6–15.
+- **Household Focus**: Built for one child per household today; multiple children are on the roadmap. Built for ages 6–16.
 
 ---
 
@@ -56,7 +56,7 @@ Marmalade the Cat lives at the top of the treehouse map, keeping young explorers
 - **Marmalade the Cat Companion**: Pure inline SVG animation with interactive moods. Click or pet her to watch her purr, nap in loaf mode, curl into a donut ball, play with yarn, or roll over for belly rubs.
 - **The Question Room**: Direct, curiosity-driven explanations with a friendly tone. Up to 8 replies per conversation to encourage thinking without conversational hooks.
 - **The Field Guide**: Cited web research via the privacy-focused Brave Search API (2,000 free searches/month) or private SearXNG. Every answer includes numbered source cards children can check themselves.
-- **The Study Nook**: A collaborative Socratic homework coach built for ages 6–15. Instead of doing the homework, it asks guiding questions, breaks projects into structured steps, and helps students think through problems.
+- **The Study Nook**: A collaborative Socratic homework coach built for ages 6–16. Instead of doing the homework, it asks guiding questions, breaks projects into structured steps, and helps students think through problems.
 - **The Game Loft**:
   - **Trivia Arcade**: 10-question rounds with age-appropriate topics and a score for the round.
   - **Story Relay Studio**: 6-act narrative arc (Inciting Incident to Resolution) where the child steers the story with free-text choices guided by Craft Coach tips.
@@ -137,7 +137,7 @@ Yes, with Ollama. No API bills.
 No. The Study Nook coaches with questions and plans.
 
 **What ages is it for?**  
-Built for ages 6–15.
+Built for ages 6–16.
 
 **Which AI models can I use, and why is Gemini blocked for kids?**  
 You can use local models via Ollama or commercial APIs from Anthropic and OpenAI. Google Gemini is blocked for child workspaces because Google's API terms explicitly prohibit use by minors (see [docs/PROVIDER_COMPLIANCE.md](docs/PROVIDER_COMPLIANCE.md)).

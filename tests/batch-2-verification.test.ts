@@ -15,7 +15,7 @@ import {
 } from '../scripts/backup.js';
 
 describe('Batch 2 Verification Suite', () => {
-  describe('1. Child Age Configuration & Clamping (8-14)', () => {
+  describe('1. Child Age Configuration & Clamping (6-16)', () => {
     it('defaults childAge to 11 on fresh setup', () => {
       const db = new SproutDatabase(':memory:');
       db.initializeFamilySetup({
@@ -43,13 +43,13 @@ describe('Batch 2 Verification Suite', () => {
       });
       expect(db1.getPolicyConfig().childAge).toBe(9);
 
-      // Clamp below 8 -> 8
+      // Clamp below 6 -> 6
       db1.updatePolicyConfig({ childAge: 5 });
-      expect(db1.getPolicyConfig().childAge).toBe(8);
+      expect(db1.getPolicyConfig().childAge).toBe(6);
 
-      // Clamp above 14 -> 14
+      // Clamp above 16 -> 16
       db1.updatePolicyConfig({ childAge: 17 });
-      expect(db1.getPolicyConfig().childAge).toBe(14);
+      expect(db1.getPolicyConfig().childAge).toBe(16);
 
       // Normal valid update
       db1.updatePolicyConfig({ childAge: 13 });

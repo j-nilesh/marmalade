@@ -462,7 +462,7 @@ export class MarmaladeDatabase {
           .run(Math.max(1, Math.floor(params.playDailyMinutes)), now);
       }
       if (typeof params.childAge === 'number') {
-        const clampedAge = Math.max(8, Math.min(14, Math.floor(params.childAge)));
+        const clampedAge = Math.max(6, Math.min(16, Math.floor(params.childAge)));
         this.raw
           .prepare(
             'UPDATE policy_config SET child_age = ?, updated_at_ms = ? WHERE id = 1'
@@ -732,7 +732,7 @@ export class MarmaladeDatabase {
         patch.instanceDisplayName !== undefined
           ? patch.instanceDisplayName.trim()
           : (current.instanceDisplayName || ''),
-      childAge: clampMinutes(patch.childAge, current.childAge ?? 11, 8, 14),
+      childAge: clampMinutes(patch.childAge, current.childAge ?? 11, 6, 16),
       piiFilterEnabled:
         patch.piiFilterEnabled !== undefined
           ? Boolean(patch.piiFilterEnabled)

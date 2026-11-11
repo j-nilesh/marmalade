@@ -1,89 +1,67 @@
-# Marmalade Product Roadmap
+# Marmalade Product Roadmap & Release Plan
 
-> **Core Philosophy:** *Trust children. Govern the technology.*
+> **Core Philosophy:** *Trust children. Govern the technology.*  
 > Marmalade trades transcript surveillance for child privacy. Parental governance focuses on boundaries, time limits, model routing, and objective safety indicators—never an invasive activity feed.
 
 ---
 
-## Current Version: v1.2 (Deployed & Family Ready)
+## Foundation: v1.2.0
 
-- [x] **Provider Compliance Gate**: Gemini blocked for minors per terms; Anthropic Claude & OpenAI enabled with deployer condition checklists; Local Ollama / mock models unrestricted.
-- [x] **PII Redaction**: Pre-egress filtering of full names, emails, phone numbers, street addresses, and schools.
-- [x] **Child Safety & Crisis Intervention**: Standardized categories (`self_harm`, `abuse_unsafe_contact`, `sexual_content`, `illicit_weapons`, `dangerous_activities`, `pii_shared`) with immediate helpline support (US 988, UK 111, India 14416/1098, International) and zero-transcript parent indicator logs.
-- [x] **AI Transparency Disclosures**: Subtle persistent indicator badge in child view + first-run explainer modal + "What your parent can see" privacy explainer.
-- [x] **Hardened Self-Hosting**: Progressive login rate limiting, encrypted API keys at rest (AES-256-GCM), 24h child session TTL, `noindex, nofollow` search exclusion.
-- [x] **Brave Web Search Integration**: Pluggable Brave Search API & SearXNG JSON adapter with safety filtering and prompt-injection delimiter sanitization (domain allowlists planned in v1.x).
-
----
-
-## Planned Additions
-
-### v1.x — Near-Term Enhancements (Fits Current Architecture)
-
-#### 1. Quiet Hours (Blackout Windows)
-- **Concept:** Time-of-day windows when the child workspace is inaccessible (e.g., during school hours 8:30am–3:00pm, or after bedtime 9:00pm–7:00am), complementing existing daily minutes and continuous-session cooldowns.
-- **Enforcement:** Strictly server-side enforcement based on the family's configured timezone.
-- **Reference:** *ChatGPT teen accounts allow parents to set scheduled blackout times.*
-
-#### 2. Out-of-Band Alerts for High-Severity Indicators
-- **Concept:** For critical safety categories (`self_harm`, `abuse_unsafe_contact`), send parents an immediate notification via email (e.g. SMTP/Resend/SendGrid) or webhook/push notification.
-- **Privacy Boundary:** The alert carries only category, timestamp, and mode—**strictly zero transcript content**.
-- **Reference:** *ChatGPT acute distress parental alerts; Khanmigo moderation trigger notifications.*
-
-#### 3. "This Answer Seems Wrong" Button
-- **Concept:** An inline button on assistant responses allowing a child to flag an answer she doubts or questions.
-- **Workflow:** The flagged exchange is voluntarily shared to the parent dashboard *because the child chose to share it*.
-- **Pedagogical Goal:** Reinforces critical thinking and the habit of questioning AI output rather than accepting it passively.
-- **Reference:** *Khanmigo built-in response feedback.*
+- **Zero-Transcript Architecture**: Daily allowances, session cooldowns, and spend limits with zero transcript browsing on the parent dashboard. *(Status: Shipped in v1.2.0)*
+- **Provider Compliance Gate**: Enforces vendor terms in code; blocks Google Gemini for minors while enabling Anthropic Claude, OpenAI, and local Ollama models with deployer condition checklists. *(Status: Shipped in v1.2.0)*
+- **Crisis Intervention & Abuse Disclosure Safeguard**: Immediate localized helpline support (US 988, UK 111, India 14416 / 1098, International) with domestic abuse disclosure suppression to protect children. *(Status: Shipped in v1.2.0)*
+- **Safety Net PII Filtering**: Pre-egress heuristic filter screening common patterns for names, phone numbers, addresses, emails, and schools before cloud dispatch. *(Status: Shipped in v1.2.0)*
+- **Self-Hosting Security**: In-memory transient sessions (15-minute idle expiration), non-root container security, encrypted API keys at rest (AES-256-GCM), and `noindex` headers. *(Status: Shipped in v1.2.0)*
 
 ---
 
-### v2.0 — Extended Features
+## v1.2.1: Cleanup (In progress)
 
-#### 4. Child-Initiated Sharing ("Share with My Parent")
-- **Concept:** A one-click action on any interesting answer, creative story, or saved artifact allowing the child to invite their parent to see it.
-- **Privacy Philosophy:** Replaces parental surveillance feeds with voluntary invitation. Parents can leave a supportive note or talk it through offline.
-- **Reference:** *PinwheelAsk allows parental reading; Marmalade preserves the connection without the involuntary surveillance.*
-
-#### 5. Age-Band Presets
-- **Concept:** One-click configuration presets within our supported range (e.g., **Ages 6–9**, **Ages 10–12**, **Ages 13–15**).
-- **Settings Governed:** Vocabulary level, topic gating, default session lengths, and turn limits. Eliminates manual tuning for newly onboarded families.
-- **Reference:** *PinwheelAsk (7–12 focus), AngelQ (5–12 focus), ChatGPT under-18 tiered policies.*
-
-#### 6. No-Links Policy in Ask Mode
-- **Concept:** Outbound web links and external images appear exclusively in **Research mode** where sources are verified and domain-filtered. **Ask & Learn** stays completely self-contained text to prevent external distraction.
-- **Reference:** *PinwheelAsk maintains a zero-link, zero-image policy in conversational queries.*
-
-#### 7. Kitegate-Inspired Safety Layer
-Drawn from the open-source [Kitegate](https://github.com/peter-manton/kitegate) project (Apache-2.0 license, reuse with attribution):
-- **Deterministic Pre/Post Screening:** Screen inputs and outputs outside the model using rule-based and semantic guards, not relying solely on system prompts.
-- **Anti-Personification Guard:** Output-side filter that detects and blocks the AI from presenting itself as a human friend, sentient entity, or emotional/romantic partner.
-- **Compassionate Redirection:** Emotional distress triggers a warm referral to a trusted adult and crisis helpline, rather than an unhelpful cold refusal.
-- **Values Packs:** Modular, cryptographically signed per-deployment configuration files for referral wording and region-specific emergency numbers.
+- **Project Rename**: Finalize the transition to Marmalade across all documentation, deployment files, and code. Maintain silent backward-compatible fallback for existing family instances (`MARMALADE_PORT`, `MARMALADE_HOST`, `MARMALADE_DB_PATH` falling back to `SPROUT_*`; `marmalade.db` falling back to `sprout.db`; `marmalade_session` falling back to `sprout_session`; `X-Marmalade-CSRF` falling back to `X-Sprout-CSRF`). *(Status: In progress)*
+- **Honest README Claims**: Replaced "100% Private" with "Self-hosted" and "Offline with Ollama" (cloud AI prompts are redacted under provider terms); documented PII filtering as a safety net rather than a guarantee; clarified Trivia Arcade as finite 10-question rounds (`trivia_10`) with round scores; added live GitHub Actions CI badge; aligned India helpline numbers to `14416 / 1098`. *(Status: In progress)*
+- **Supported Age Range**: Standardized supported age range to **ages 6–16** everywhere (README, FAQ, CHANGELOG, and Study Nook mentor calibration). *(Status: In progress)*
+- **Screenshots & FAQ**: High-resolution screenshots captured in Demo Mode with mock data (Treehouse map with Ginger Cat, Question Room, Study Nook Socratic coach, and Parent Dashboard showing limits with zero transcript reader), accompanied by a search- and AI-friendly plain FAQ. *(Status: In progress)*
+- **Repository Hygiene**: Added `CITATION.cff`, GitHub issue templates (`story_or_trivia.md`, `safety_concern.md`), and starter contributor tasks. *(Status: In progress)*
 
 ---
 
-## Why these design choices
+## v1.3: Boundaries and safety (Next)
 
-Citable commercial and research precedents supporting Marmalade's core technical decisions:
-
-- **Structured Activities Over Open-Ended Chat:** Character.AI banned open-ended bot chats for users under 18 and replaced them with *Stories* (a bounded, choice-based format), directly validating Marmalade's decision to provide distinct modes (Ask, Research, Schoolwork, Play) with natural stopping points.
-- **Per-Mode Turn Caps:** Khanmigo strictly bounds interaction lengths, noting that extended unguided conversations significantly increase the likelihood of AI hallucination, sycophancy, and behavioral drift.
-- **Prominent Limitation Disclosures:** Khanmigo and ChatGPT emphasize in-product limitation disclosures, reinforcing Marmalade's persistent AI disclosure badge and first-run explainer.
+1. **Quiet Hours (Blackout Windows)**: Time-of-day windows when the child workspace sleeps (e.g. school hours 8:30am–3:00pm, or after bedtime 9:00pm–7:00am). Enforced strictly server-side in the family's configured timezone, complementing daily allowances and continuous cooldowns. *(Status: Planned)*
+2. **Anti-Personification Guard**: An output-side filter, outside the model, that detects, blocks, or rewrites replies where the AI claims to be human, sentient, the child's real friend, or offers emotional or romantic intimacy. Marmalade the cat remains a playful, imaginative character that clearly says she is an AI helper. Includes an adversarial test suite of personification prompts. Inspired by the open-source [Kitegate](https://github.com/peter-manton/kitegate) project (Apache-2.0, with attribution). *(Status: Planned)*
+3. **Out-of-Band Safety Alerts**: For critical safety categories (`self_harm`, `abuse_unsafe_contact`), notify parents immediately via email (using the parent's own SMTP credentials) or webhook. The payload contains category, timestamp, and mode only—**strictly zero transcript text**. Off by default, parent-configured, with no central Marmalade relay service (preserving the zero-telemetry promise). The domestic abuse-disclosure suppression rule applies to these out-of-band alerts as well. *(Status: Planned)*
+4. **Research Domain Allowlists**: Optional parent setting to prefer or restrict Field Guide results to chosen educational and scientific sources (e.g. Wikipedia, Britannica, Khan Academy, NASA, `.edu`, `.gov`). Ships with a curated default list that parents can inspect, modify, or disable. *(Status: Planned)*
 
 ---
 
-## Core Stance to Communicate Publicly
+## v1.4: Curiosity and agency (After that)
 
-> Most commercial kid AI products build safety around **parental surveillance**—letting parents read chat logs and monitor prompt histories. Marmalade rejects this model: **it trades parental transcript visibility for the child's privacy and autonomy**.
->
-> Because parents do not have transcripts, our non-content safeguards—objective category indicators, urgent out-of-band alerts, child-initiated sharing, and server-side usage boundaries—must be exceptionally clear, reliable, and trustworthy.
+1. **"This Answer Seems Wrong" Button**: An inline flag on AI answers allowing the child to question an explanation and add a note on why. Flagged exchanges reach the parent dashboard *only because the child chose to share them*. Displays an encouraging message (*"Good catch! AIs make mistakes, and checking them makes you a great researcher."*). *(Status: Planned)*
+2. **Share with My Parent**: A one-tap action on any saved story, research note, or completed trivia round that sends it to the parent dashboard. Parents can read the work and leave a short encouraging note back. Sharing is always the child's voluntary choice, preserving privacy while fostering family connection. *(Status: Planned)*
+3. **Age-Band Presets**: Four developmental presets (**Ages 6–7**, **Ages 8–10**, **Ages 11–13**, and **Ages 14–16**). Each preset tunes vocabulary complexity, Socratic scaffolding depth, turn caps, and session lengths. Selected during setup and adjustable in parent settings. *(Status: Planned)*
+4. **Multi-Child Households Evaluation**: Evaluate pulling multi-child support into v1.4 versus anchoring v2.0. *(Status: Planned)*  
+   *Effort Estimate*: ~3–4 weeks of engineering (medium-to-high complexity). Requires database schema migrations to scope `daily_usage`, `saved_artifacts`, `ledger_notes`, and `extension_requests` to individual `user_id`s, separate child credentials, and sibling-proof storage isolation. Recommended as the cornerstone of v2.0 so v1.3 and v1.4 can ship high-value safety and agency features rapidly.
+
+---
+
+## v2.0: Households (Later)
+
+1. **Multi-Child Household Support**: Complete multi-child profiles on a single family instance (if not shipped in v1.4). Separate child logins, individual age-band presets, per-child time allowances, and sibling-proof privacy isolation (one child cannot browse or edit another child's chest). *(Status: Planned)*
+2. **No-Links Policy in Ask Mode**: Strict information hygiene separating quick Q&A from in-depth research. Outbound links and web images appear exclusively in **The Field Guide (Research)** where sources are domain-vetted and cited. **The Question Room (Ask)** stays completely self-contained text to prevent external distraction. *(Status: Planned)*
+
+---
+
+## Ideas we're considering (Under Exploration)
+
+*Promising ideas under technical exploration with no strict release commitment:*
+- **Values Packs**: Modular, cryptographically signed configuration files allowing families or homeschool groups to customize referral wording, regional emergency numbers, and sensitive topic guidance. *(Status: Planned)*
+- **Translations & Localization**: Localizing the treehouse interface into additional languages, beginning with Hindi. *(Status: Planned)*
 
 ---
 
 ## Good First Issues
 
-Looking to contribute to Marmalade? Here are five starter tasks for new contributors:
+Looking to contribute to Marmalade? Here are starter issues for new contributors:
 
 1. **New Trivia Pack**: Add a curated 10-question trivia pack on oceans, space exploration, or ancient history in `src/server/activities/engine.ts`.
 2. **Translated Crisis Helplines**: Add regional youth crisis and support helplines for an additional country or language in `src/shared/safety.ts`.
@@ -91,12 +69,19 @@ Looking to contribute to Marmalade? Here are five starter tasks for new contribu
 4. **Documentation & Self-Hosting Guide**: Improve or clarify setup documentation for unRAID, TrueNAS, or Synology NAS deployments in `SELF_HOSTING.md`.
 5. **Raspberry Pi 5 Test Report**: Test and document performance benchmarks running Marmalade with local Ollama (`llama3.2:1b` or `llama3.2:3b`) on Raspberry Pi 5.
 
+*(Once issues are opened on GitHub, they will be tracked under the [`good first issue`](https://github.com/j-nilesh/marmalade/labels/good%20first%20issue) label).*
+
 ---
 
-## References & Sources
+## Why these design choices
 
-- **Character.AI Guided Stories:** [Engadget Article](https://www.engadget.com/ai/characterai-launches-guided-stories-format-after-banning-teens-from-its-chatbots-133000131.html)
-- **Khanmigo Safety Features:** [Khan Academy Support](https://support.khanacademy.org/hc/en-us/articles/17901155424281-What-safety-features-does-Khanmigo-have)
-- **ChatGPT Teen Accounts:** [Techlicious Review](https://www.techlicious.com/blog/teen-accounts-come-to-chatfpt-heres-what-parents-need-to-know/)
-- **PinwheelAsk / PinwheelGPT:** [Pinwheel Blog](https://blog.pinwheel.com/pinwheelgpt)
-- **Kitegate Open-Source Project:** [GitHub Repository](https://github.com/peter-manton/kitegate)
+Citable commercial and research precedents supporting Marmalade's technical decisions:
+
+- **Structured Activities Over Open-Ended Chat:** Character.AI replaced open-ended bot chats for users under 18 with *Stories* (a bounded, choice-based format), validating Marmalade's decision to provide distinct modes with natural stopping points.  
+  *Source:* [Character.AI Help Center](https://support.character.ai)
+- **Per-Mode Turn Caps:** Extended unguided conversations significantly increase the likelihood of AI hallucination, sycophancy, and behavioral drift; bounded interactions keep models reliable.  
+  *Source:* [Khan Academy Khanmigo Safety](https://support.khanacademy.org/hc/en-us/articles/17901155424281-What-safety-features-does-Khanmigo-have)
+- **Prominent Limitation Disclosures:** Persistent disclosures reinforce that AI output can make mistakes, encouraging children to verify facts with parents, books, or teachers.  
+  *Source:* [OpenAI Under-18 API Guidance](https://developers.openai.com/api/docs/guides/safety-checks/under-18-api-guidance)
+- **Non-Surveillance Boundaries:** Youth privacy and safety research emphasizes that surveillance-based parental controls discourage healthy curiosity and trust, whereas structural limits protect safety without invading privacy.  
+  *Source:* [Pinwheel Child Safety Research](https://www.pinwheel.com)

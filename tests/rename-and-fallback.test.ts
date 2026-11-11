@@ -220,4 +220,31 @@ describe('Marmalade Rename and Backward-Compatible Fallbacks', () => {
       db.close();
     });
   });
+
+  describe('Supported Age Range Calibration (6–16)', () => {
+    it('calibrates child age across the supported 6 to 16 range and clamps boundary values', () => {
+      const db = new MarmaladeDatabase(':memory:');
+      db.initializeFamilySetup({
+        parentUsername: 'admin',
+        parentDisplayName: 'Admin',
+        parentPassword: 'Password123!',
+        childUsername: 'kid',
+        childDisplayName: 'Kid',
+        childPassword: 'Password123!',
+        childAge: 16,
+      });
+      expect(db.getPolicyConfig().childAge).toBe(16);
+
+      db.updatePolicyConfig({ childAge: 6 });
+      expect(db.getPolicyConfig().childAge).toBe(6);
+
+      db.updatePolicyConfig({ childAge: 4 });
+      expect(db.getPolicyConfig().childAge).toBe(6);
+
+      db.updatePolicyConfig({ childAge: 18 });
+      expect(db.getPolicyConfig().childAge).toBe(16);
+
+      db.close();
+    });
+  });
 });

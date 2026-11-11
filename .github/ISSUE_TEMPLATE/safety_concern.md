@@ -12,7 +12,7 @@ assignees: ''
 
 ### Safety Concern Category
 - [ ] Model behavioral drift or sycophancy
-- [ ] Age-inappropriate response in child workspace (ages 6–15)
+- [ ] Age-inappropriate response in child workspace (ages 6–16)
 - [ ] Helpline / crisis intervention phrasing or regional contact inaccuracy
 - [ ] PII filter edge case or false positive
 - [ ] Study Nook homework answering (doing work instead of Socratic coaching)

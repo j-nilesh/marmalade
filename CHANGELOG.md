@@ -12,7 +12,7 @@
   - Updated PII redaction description to clearly state it is a safety net rather than an absolute guarantee.
   - Clarified Trivia Arcade rules to specify finite 10-question rounds with scores for the round rather than unbounded streaks.
   - Aligned child crisis helpline numbers for India to Tele-MANAS (14416) and Childline (1098) across all documentation.
-  - Standardized supported age range to ages 6–15 across all documentation.
+  - Standardized supported age range to ages 6–16 across all documentation and Study Nook calibration.
   - Replaced third-party documentation links with official Khan Academy help resources.
 - **Repository Hygiene & Community Standards**:
   - Added `CITATION.cff` for academic and community citation.
@@ -25,7 +25,7 @@
 - **Sanctuary Learning Workspace**: Four distinct learning spaces:
   - **Question Room (Ask & Learn)**: Bite-sized explanations with conversational boundaries (8 turn cap).
   - **Field Guide (Safe Web Research)**: Pluggable Brave Search API and private SearXNG support with numbered citation source cards.
-  - **Study Nook (Schoolwork Coach)**: Socratic homework guidance calibrated to child age (6–15) that coaches rather than gives answers.
+  - **Study Nook (Schoolwork Coach)**: Socratic homework guidance calibrated to child age (6–16) that coaches rather than gives answers.
   - **Game Loft (Creative Play)**: Interactive Story Relay (6-act narrative arc with Craft Coach tips), dynamic Trivia Arcade (10-question rounds), and Twenty Questions.
   - **Treasure Chest**: Explicitly saved work notebook with Markdown exports.
 - **Privacy by Architecture & Zero-Transcript Guarantee**:

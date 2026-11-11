@@ -58,6 +58,10 @@ Open `http://localhost:5173` for the Vite development view, or `http://localhost
 - Contribute new inline SVG animations or poses for Marmalade the ginger cat (`src/client/components/Cat.tsx`).
 - Maintain accessibility standards (minimum 44px tap targets, keyboard navigation, `:focus-visible` styling).
 
+### 4. Roadmap & Starter Tasks
+- Check out [`ROADMAP.md`](ROADMAP.md) for our upcoming release milestones (v1.3 Boundaries and Safety, v1.4 Curiosity and Agency, v2.0 Households).
+- Tackle tasks listed in the **Good First Issues** section of the roadmap, such as adding curated trivia packs, translated helpline sets, or NAS deployment guides.
+
 ---
 
 ## Verification Before Submitting a PR
