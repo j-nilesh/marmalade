@@ -1,8 +1,8 @@
 # Provider Compliance & Minors Safety Matrix
 
-*Last updated: 4 November 2026*
+*Last updated: 11 November 2026*
 
-This document outlines how commercial and local AI model providers treat minors under their API terms of service, and how **Sprout** enforces compliance in code.
+This document outlines how commercial and local AI model providers treat minors under their API terms of service, and how **Marmalade** enforces compliance in code.
 
 ---
 
@@ -19,7 +19,7 @@ This document outlines how commercial and local AI model providers treat minors 
 
 ---
 
-## How Sprout Enforces Compliance in Code
+## How Marmalade Enforces Compliance in Code
 
 1. **Hard Provider Gating**:
    - The backend policy engine rejects any request from a child workspace if the active provider is marked `not_allowed` (such as Gemini).

@@ -86,7 +86,8 @@ export function ChildWorkspace({
   initial: { quota: QuotaStatusSummary; policy: PolicyConfig };
   onSignOut: () => Promise<void>;
 }) {
-  const storageKey = `sprout-workspace-${user.id}`;
+  const storageKey = `marmalade-workspace-${user.id}`;
+  const legacyStorageKey = `sprout-workspace-${user.id}`;
   const [view, setView] = useState<View>('home'),
     [play, setPlay] = useState('trivia'),
     [sessions, setSessions] = useState<Record<string, Session>>({}),
@@ -141,9 +142,14 @@ export function ChildWorkspace({
       await refresh();
       let stored: any;
       try {
-        stored = JSON.parse(sessionStorage.getItem(storageKey) || 'null');
+        stored = JSON.parse(
+          sessionStorage.getItem(storageKey) ||
+            sessionStorage.getItem(legacyStorageKey) ||
+            'null'
+        );
       } catch {
         sessionStorage.removeItem(storageKey);
+        sessionStorage.removeItem(legacyStorageKey);
       }
       if (stored) {
         if (

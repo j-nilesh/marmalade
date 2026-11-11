@@ -25,7 +25,7 @@ import type {
   TriviaTopic,
   TwentyQuestionsSessionPublic,
 } from '../../shared/types.js';
-import type { SproutDatabase } from '../db/sqlite.js';
+import type { MarmaladeDatabase, SproutDatabase } from '../db/sqlite.js';
 import type { PolicyEngine } from '../policy/engine.js';
 import {
   selectTriviaRoundQuestions,
@@ -263,7 +263,7 @@ export class ActivityEngine {
   private readonly safetyLayer = new ApplicationSafetyLayer();
 
   constructor(
-    private readonly db: SproutDatabase,
+    private readonly db: MarmaladeDatabase,
     private readonly policyEngine: PolicyEngine,
     private readonly providerRegistry: ProviderRegistry
   ) {}
@@ -1732,8 +1732,8 @@ COACH_TIP: <one friendly, technical craft advice sentence>`;
     const searchStatusNote = activePolicy.allowExternalSearch
       ? this.providerRegistry.isExternalSearchConfigured()
         ? 'External web search is enabled by parent policy; source excerpts are treated as untrusted evidence.'
-        : 'External search is allowed by policy, but no external search URL is configured; using Sprout’s limited local educational source library.'
-      : 'External web search is disabled by parent policy; using Sprout’s limited local educational source library.';
+        : 'External search is allowed by policy, but no external search URL is configured; using Marmalade’s limited local educational source library.'
+      : 'External web search is disabled by parent policy; using Marmalade’s limited local educational source library.';
 
     // 2. Format evidence packets with CANONICAL IDs ONLY
     const sourceEvidenceText = verifiedSources

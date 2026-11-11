@@ -13,7 +13,12 @@ import type {
   TriviaDifficulty,
   TriviaTopic,
 } from '../shared/types.js';
-import { SproutDatabase, type SessionRecord } from './db/sqlite.js';
+import {
+  MarmaladeDatabase,
+  SproutDatabase,
+  resolveDefaultDbPath,
+  type SessionRecord,
+} from './db/sqlite.js';
 import { PolicyEngine } from './policy/engine.js';
 import { ActivityEngine } from './activities/engine.js';
 import { ProviderRegistry } from './providers/registry.js';
@@ -21,22 +26,25 @@ import { LoginRateLimiter } from './auth/rateLimit.js';
 import { BRANDING } from '../shared/branding.js';
 import { isProviderAllowedForMinors } from '../shared/providerPolicy.js';
 
-export const SESSION_COOKIE_NAME = 'sprout_session';
+export const SESSION_COOKIE_NAME = 'marmalade_session';
+export const LEGACY_SESSION_COOKIE_NAME = 'sprout_session';
 
-export interface SproutAppOptions {
+export interface MarmaladeAppOptions {
   dbPath?: string;
   clock?: () => number;
   serveStaticClient?: boolean;
   trustProxy?: boolean;
 }
+export type SproutAppOptions = MarmaladeAppOptions;
 
-export interface SproutAppInstance {
+export interface MarmaladeAppInstance {
   app: Hono<any>;
-  db: SproutDatabase;
+  db: MarmaladeDatabase;
   policyEngine: PolicyEngine;
   activityEngine: ActivityEngine;
   providerRegistry: ProviderRegistry;
 }
+export type SproutAppInstance = MarmaladeAppInstance;
 
 const MIME_TYPES: Record<string, string> = {
   '.html': 'text/html; charset=utf-8',
@@ -48,11 +56,11 @@ const MIME_TYPES: Record<string, string> = {
   '.ico': 'image/x-icon',
 };
 
-export function createSproutApp(
-  options: SproutAppOptions = {}
-): SproutAppInstance {
+export function createMarmaladeApp(
+  options: MarmaladeAppOptions = {}
+): MarmaladeAppInstance {
   const now = options.clock ?? (() => Date.now());
-  const db = new SproutDatabase(options.dbPath ?? './data/sprout.db');
+  const db = new MarmaladeDatabase(options.dbPath ?? resolveDefaultDbPath());
   const loginRateLimiter = new LoginRateLimiter();
   const providerRegistry = new ProviderRegistry(db);
   const policyEngine = new PolicyEngine(db, providerRegistry);
@@ -181,7 +189,7 @@ export function createSproutApp(
           message:
             code === 'SEARCH_UNAVAILABLE'
               ? 'Web search is unavailable. Your question is safe to retry. Ask a parent to check the search connection.'
-              : 'Sprout could not get an answer from the AI connection. Your input has been kept. Try again, or ask a parent to check the connection.',
+              : 'Marmalade could not get an answer from the AI connection. Your input has been kept. Try again, or ask a parent to check the connection.',
         },
         502
       );
@@ -240,7 +248,9 @@ export function createSproutApp(
 
   // Session resolution middleware
   app.use('/api/*', async (c, next) => {
-    const rawToken = getCookie(c, SESSION_COOKIE_NAME);
+    const rawToken =
+      getCookie(c, SESSION_COOKIE_NAME) ||
+      getCookie(c, LEGACY_SESSION_COOKIE_NAME);
     const session = rawToken ? db.getValidSession(rawToken, now()) : null;
     c.set('session', session);
     await next();
@@ -267,7 +277,12 @@ export function createSproutApp(
     const method = c.req.method.toUpperCase();
     if (method !== 'GET' && method !== 'HEAD' && method !== 'OPTIONS') {
       const csrfHeader =
-        c.req.header('X-Sprout-CSRF') || c.req.header('x-csrf-token');
+        c.req.header('x-marmalade-csrf') ||
+        c.req.header('X-Marmalade-CSRF') ||
+        c.req.header('x-sprout-csrf') ||
+        c.req.header('X-Sprout-CSRF') ||
+        c.req.header('x-csrf-token') ||
+        c.req.header('X-CSRF-Token');
       if (!csrfHeader || csrfHeader !== session.csrfToken) {
         return {
           ok: false,
@@ -648,7 +663,9 @@ export function createSproutApp(
   });
 
   app.post('/api/auth/logout', (c) => {
-    const rawToken = getCookie(c, SESSION_COOKIE_NAME);
+    const rawToken =
+      getCookie(c, SESSION_COOKIE_NAME) ||
+      getCookie(c, LEGACY_SESSION_COOKIE_NAME);
     const currentSession = c.get('session');
     if (currentSession?.user.role === 'child')
       activityEngine.clearUserSessions(currentSession.user.id);
@@ -656,6 +673,7 @@ export function createSproutApp(
       db.deleteSession(rawToken);
     }
     deleteCookie(c, SESSION_COOKIE_NAME, { path: '/' });
+    deleteCookie(c, LEGACY_SESSION_COOKIE_NAME, { path: '/' });
     return c.json({ ok: true });
   });
 
@@ -1441,9 +1459,11 @@ export function createSproutApp(
           'X-Robots-Tag': 'noindex, nofollow',
         });
       }
-      return c.text('Sprout Core API Server is running.', 200);
+      return c.text('Marmalade API Server is running.', 200);
     });
   }
 
   return { app, db, policyEngine, activityEngine, providerRegistry };
 }
+
+export const createSproutApp = createMarmaladeApp;

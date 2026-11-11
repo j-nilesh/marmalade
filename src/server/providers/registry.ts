@@ -3,7 +3,7 @@ import type {
   ProviderId,
   ProviderPreflightResult,
 } from '../../shared/types.js';
-import type { SproutDatabase } from '../db/sqlite.js';
+import type { MarmaladeDatabase, SproutDatabase } from '../db/sqlite.js';
 import type { ModelProvider, SearchProvider } from './types.js';
 import { GeminiModelProvider } from './gemini.js';
 import { MockModelProvider } from './mock.js';
@@ -20,9 +20,9 @@ export class ProviderRegistry {
   private readonly checks = new Map<ProviderId, ProviderPreflightResult>();
   private readonly settingsSignatures = new Map<ProviderId, string>();
   private searchProvider: SearchProvider;
-  private readonly db?: SproutDatabase;
+  private readonly db?: MarmaladeDatabase;
 
-  constructor(db?: SproutDatabase) {
+  constructor(db?: MarmaladeDatabase) {
     this.db = db;
     this.searchProvider = new SyntheticSearchProvider();
     this.reloadFromSettings();

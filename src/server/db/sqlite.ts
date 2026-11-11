@@ -1,6 +1,6 @@
 import Database from 'better-sqlite3';
-import { mkdirSync } from 'node:fs';
-import { dirname } from 'node:path';
+import { mkdirSync, existsSync } from 'node:fs';
+import { dirname, join } from 'node:path';
 import type {
   ActivityMode,
   PolicyConfig,
@@ -64,15 +64,36 @@ export interface SessionRecord {
   lastSeenAtMs: number;
 }
 
-export class SproutDatabase {
+export function resolveDefaultDbPath(dataDir: string = './data'): string {
+  const envPath =
+    process.env.MARMALADE_DB_PATH ||
+    process.env.SPROUT_DB_PATH ||
+    process.env.DB_PATH ||
+    process.env.DATABASE_PATH;
+  if (envPath) return envPath;
+
+  const defaultMarmalade = join(dataDir, 'marmalade.db');
+  const legacySprout = join(dataDir, 'sprout.db');
+  if (!existsSync(defaultMarmalade) && existsSync(legacySprout)) {
+    return legacySprout;
+  }
+  return defaultMarmalade;
+}
+
+export class MarmaladeDatabase {
   public readonly raw: Database.Database;
 
-  constructor(dbPath = './data/sprout.db') {
+  public close(): void {
+    this.raw.close();
+  }
+
+  constructor(dbPath: string = resolveDefaultDbPath()) {
     if (dbPath !== ':memory:') {
       mkdirSync(dirname(dbPath), { recursive: true });
     }
     this.raw = new Database(dbPath);
     const requestedJournalMode = (
+      process.env.MARMALADE_SQLITE_JOURNAL_MODE ||
       process.env.SPROUT_SQLITE_JOURNAL_MODE ||
       (process.env.K_SERVICE ? 'DELETE' : 'WAL')
     ).toUpperCase();
@@ -1416,3 +1437,5 @@ export class SproutDatabase {
     }));
   }
 }
+
+export { MarmaladeDatabase as SproutDatabase };

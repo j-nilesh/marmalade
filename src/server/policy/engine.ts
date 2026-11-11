@@ -6,7 +6,7 @@ import type {
   QuotaStatusSummary,
 } from '../../shared/types.js';
 import { isProviderAllowedForMinors } from '../../shared/providerPolicy.js';
-import type { SproutDatabase } from '../db/sqlite.js';
+import type { MarmaladeDatabase, SproutDatabase } from '../db/sqlite.js';
 import type { ProviderRegistry } from '../providers/registry.js';
 
 export const INTERACTION_LEASE_DURATION_MS = 90 * 1000; // 90s bounded lease after user interaction
@@ -55,7 +55,7 @@ export function getMonthKeyInTimezone(
 
 export class PolicyEngine {
   constructor(
-    private readonly db: SproutDatabase,
+    private readonly db: MarmaladeDatabase,
     private readonly providerRegistry?: ProviderRegistry
   ) {}
 

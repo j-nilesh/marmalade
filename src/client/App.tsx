@@ -53,13 +53,19 @@ export function App() {
   useEffect(() => {
     void load();
     const expire = () => setExpired(true);
+    window.addEventListener('marmalade-session-expired', expire);
     window.addEventListener('sprout-session-expired', expire);
-    return () => window.removeEventListener('sprout-session-expired', expire);
+    return () => {
+      window.removeEventListener('marmalade-session-expired', expire);
+      window.removeEventListener('sprout-session-expired', expire);
+    };
   }, []);
   async function signOut() {
     await api('/auth/logout', 'POST');
-    if (boot?.user)
+    if (boot?.user) {
+      sessionStorage.removeItem(`marmalade-workspace-${boot.user.id}`);
       sessionStorage.removeItem(`sprout-workspace-${boot.user.id}`);
+    }
     setExpired(false);
     setFresh(false);
     await load();

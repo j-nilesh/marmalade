@@ -1,11 +1,11 @@
 services:
   marmalade:
-    # Use prebuilt multi-arch image (fastest on Raspberry Pi / home servers):
-    # image: ghcr.io/j-nilesh/marmalade:latest
-    # Or compile locally from source:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    # Option 1: Use prebuilt multi-arch image (fastest):
+    image: ghcr.io/j-nilesh/marmalade:latest
+    # Option 2: Or compile locally from source (comment out image above and uncomment build below):
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
     container_name: marmalade
     restart: unless-stopped
     ports:
@@ -15,9 +15,9 @@ services:
       # Persistent local database volume
       - ./data:/app/data
     environment:
-      - SPROUT_PORT=4120
-      - SPROUT_HOST=0.0.0.0
-      - SPROUT_DB_PATH=/app/data/sprout.db
+      - MARMALADE_PORT=4120
+      - MARMALADE_HOST=0.0.0.0
+      - MARMALADE_DB_PATH=/app/data/marmalade.db
       - SETUP_TOKEN=${SETUP_TOKEN:-}
       - SESSION_SECRET=${SESSION_SECRET:-}
       - OLLAMA_BASE_URL=http://host.docker.internal:11434
@@ -26,7 +26,8 @@ services:
       - OPENAI_API_KEY=${OPENAI_API_KEY:-}
       - OPENAI_ZDR_APPROVED=${OPENAI_ZDR_APPROVED:-false}
       - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
-      - BRAVE_SEARCH_API_KEY=${BRAVE_SEARCH_API_KEY:-}
+      - SEARCH_API_URL=${SEARCH_API_URL:-}
+      - SEARCH_API_KEY=${SEARCH_API_KEY:-${BRAVE_SEARCH_API_KEY:-}}
     extra_hosts:
       # Allows the container to access local Ollama running on the host machine
       - "host.docker.internal:host-gateway"

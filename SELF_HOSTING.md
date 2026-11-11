@@ -89,11 +89,12 @@ Fly.io offers global hosting with persistent storage volumes:
 2. In Railway, click **New Project → Deploy from GitHub repo**.
 3. Add a **Persistent Volume** mounted at `/app/data`.
 4. Add environment variables:
-   - `SPROUT_PORT=4120`
-   - `SPROUT_HOST=0.0.0.0`
-   - `SPROUT_DB_PATH=/app/data/marmalade.db`
+   - `MARMALADE_PORT=4120`
+   - `MARMALADE_HOST=0.0.0.0`
+   - `MARMALADE_DB_PATH=/app/data/marmalade.db`
    - `SETUP_TOKEN=your-secret-passphrase` *(recommended for public instances)*
    - `TRUST_PROXY=true`
+   *(Note: Existing `SPROUT_*` environment variables continue to be supported as silent fallback).*
 5. Generate a public domain and visit your app!
 
 ### Render
@@ -101,7 +102,9 @@ Fly.io offers global hosting with persistent storage volumes:
 2. Select **Docker** environment.
 3. Attach a **Disk** mounted at `/app/data` (size: 1 GB).
 4. Set environment variables:
-   - `SPROUT_DB_PATH=/app/data/marmalade.db`
+   - `MARMALADE_PORT=4120`
+   - `MARMALADE_HOST=0.0.0.0`
+   - `MARMALADE_DB_PATH=/app/data/marmalade.db`
    - `SETUP_TOKEN=your-secret-passphrase` *(recommended for public instances)*
    - `TRUST_PROXY=true`
 
@@ -126,7 +129,7 @@ npm start
 
 For Mac users who want to run Marmalade over the local Wi-Fi network:
 ```bash
-SPROUT_HOST=0.0.0.0 ./scripts/start-family-mac.sh
+MARMALADE_HOST=0.0.0.0 ./scripts/start-family-mac.sh
 ```
 
 ---
@@ -174,7 +177,7 @@ Backups are timestamped and saved into `./backups/` with automated rotation (ret
 ### Restoring from Backup
 To restore a backup safely, use the built-in restore command. It validates database integrity and cleans up stale `-wal` and `-shm` write-ahead log files to prevent corruption:
 ```bash
-npm run restore -- --backup backups/sprout_backup_YYYYMMDD_HHMMSS.db
+npm run restore -- --backup backups/marmalade_backup_YYYYMMDD_HHMMSS.db
 ```
 
 > **Important**: Stored API keys are encrypted at rest using AES-256-GCM keyed by `data/.encryption_secret` (generated on first boot with `0600` file permissions). When migrating to a new machine or restoring backups, always copy `data/.encryption_secret` alongside the database, otherwise stored API keys will need to be re-entered in Parent Settings.

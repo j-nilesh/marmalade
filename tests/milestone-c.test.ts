@@ -45,7 +45,7 @@ describe('Sprout Core — Milestone C Complete Activity State Machines', () => {
       })
     );
     const setCookie = loginRes.headers.get('set-cookie');
-    const cookie = setCookie?.match(/sprout_session=([^;]+)/)?.[1] || '';
+    const cookie = setCookie?.match(/(?:marmalade|sprout)_session=([^;]+)/)?.[1] || '';
     const loginData = await loginRes.json();
     const csrf = loginData.csrfToken as string;
 
@@ -337,7 +337,7 @@ describe('Sprout Core — Milestone C Complete Activity State Machines', () => {
         body: JSON.stringify({ username: 'parent', password: 'parent-password-123' }),
       })
     );
-    const parentCookie = parentLogin.headers.get('set-cookie')?.match(/sprout_session=([^;]+)/)?.[1] || '';
+    const parentCookie = parentLogin.headers.get('set-cookie')?.match(/(?:marmalade|sprout)_session=([^;]+)/)?.[1] || '';
     const parentData = await parentLogin.json();
     const parentCsrf = parentData.csrfToken as string;
 

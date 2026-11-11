@@ -9,7 +9,7 @@
 
 - [x] **Provider Compliance Gate**: Gemini blocked for minors per terms; Anthropic Claude & OpenAI enabled with deployer condition checklists; Local Ollama / mock models unrestricted.
 - [x] **PII Redaction**: Pre-egress filtering of full names, emails, phone numbers, street addresses, and schools.
-- [x] **Child Safety & Crisis Intervention**: Standardized categories (`self_harm`, `abuse_unsafe_contact`, `sexual_content`, `illicit_weapons`, `dangerous_activities`, `pii_shared`) with immediate helpline support (US 988, UK 111, India 112/1098, International) and zero-transcript parent indicator logs.
+- [x] **Child Safety & Crisis Intervention**: Standardized categories (`self_harm`, `abuse_unsafe_contact`, `sexual_content`, `illicit_weapons`, `dangerous_activities`, `pii_shared`) with immediate helpline support (US 988, UK 111, India 14416/1098, International) and zero-transcript parent indicator logs.
 - [x] **AI Transparency Disclosures**: Subtle persistent indicator badge in child view + first-run explainer modal + "What your parent can see" privacy explainer.
 - [x] **Hardened Self-Hosting**: Progressive login rate limiting, encrypted API keys at rest (AES-256-GCM), 24h child session TTL, `noindex, nofollow` search exclusion.
 - [x] **Brave Web Search Integration**: Pluggable Brave Search API & SearXNG JSON adapter with safety filtering and prompt-injection delimiter sanitization (domain allowlists planned in v1.x).
@@ -46,7 +46,7 @@
 - **Reference:** *PinwheelAsk allows parental reading; Marmalade preserves the connection without the involuntary surveillance.*
 
 #### 5. Age-Band Presets
-- **Concept:** One-click configuration presets (e.g., **Ages 8–10**, **Ages 11–13**, **Ages 14–17**).
+- **Concept:** One-click configuration presets within our supported range (e.g., **Ages 6–9**, **Ages 10–12**, **Ages 13–15**).
 - **Settings Governed:** Vocabulary level, topic gating, default session lengths, and turn limits. Eliminates manual tuning for newly onboarded families.
 - **Reference:** *PinwheelAsk (7–12 focus), AngelQ (5–12 focus), ChatGPT under-18 tiered policies.*
 
@@ -63,29 +63,40 @@ Drawn from the open-source [Kitegate](https://github.com/peter-manton/kitegate) 
 
 ---
 
-## Architectural & Landing Page Evidence Base
+## Why these design choices
 
-Citable commercial and research precedents supporting Sprout's core technical decisions:
+Citable commercial and research precedents supporting Marmalade's core technical decisions:
 
-- **Structured Activities Over Open-Ended Chat:** Character.AI banned open-ended bot chats for users under 18 and replaced them with *Stories* (a bounded, choice-based format), directly validating Sprout's decision to provide distinct modes (Ask, Research, Schoolwork, Play) with natural stopping points.
+- **Structured Activities Over Open-Ended Chat:** Character.AI banned open-ended bot chats for users under 18 and replaced them with *Stories* (a bounded, choice-based format), directly validating Marmalade's decision to provide distinct modes (Ask, Research, Schoolwork, Play) with natural stopping points.
 - **Per-Mode Turn Caps:** Khanmigo strictly bounds interaction lengths, noting that extended unguided conversations significantly increase the likelihood of AI hallucination, sycophancy, and behavioral drift.
-- **Prominent Limitation Disclosures:** Khanmigo and ChatGPT emphasize in-product limitation disclosures, reinforcing Sprout's persistent AI disclosure badge and first-run explainer.
+- **Prominent Limitation Disclosures:** Khanmigo and ChatGPT emphasize in-product limitation disclosures, reinforcing Marmalade's persistent AI disclosure badge and first-run explainer.
 
 ---
 
 ## Core Stance to Communicate Publicly
 
-> Most commercial kid AI products build safety around **parental surveillance**—letting parents read chat logs and monitor prompt histories. Sprout rejects this model: **it trades parental transcript visibility for the child's privacy and autonomy**.
+> Most commercial kid AI products build safety around **parental surveillance**—letting parents read chat logs and monitor prompt histories. Marmalade rejects this model: **it trades parental transcript visibility for the child's privacy and autonomy**.
 >
 > Because parents do not have transcripts, our non-content safeguards—objective category indicators, urgent out-of-band alerts, child-initiated sharing, and server-side usage boundaries—must be exceptionally clear, reliable, and trustworthy.
+
+---
+
+## Good First Issues
+
+Looking to contribute to Marmalade? Here are five starter tasks for new contributors:
+
+1. **New Trivia Pack**: Add a curated 10-question trivia pack on oceans, space exploration, or ancient history in `src/server/activities/engine.ts`.
+2. **Translated Crisis Helplines**: Add regional youth crisis and support helplines for an additional country or language in `src/shared/safety.ts`.
+3. **Quiet Hours UI Stub**: Build a parent settings interface component for bedtime/school blackout schedules.
+4. **Documentation & Self-Hosting Guide**: Improve or clarify setup documentation for unRAID, TrueNAS, or Synology NAS deployments in `SELF_HOSTING.md`.
+5. **Raspberry Pi 5 Test Report**: Test and document performance benchmarks running Marmalade with local Ollama (`llama3.2:1b` or `llama3.2:3b`) on Raspberry Pi 5.
 
 ---
 
 ## References & Sources
 
 - **Character.AI Guided Stories:** [Engadget Article](https://www.engadget.com/ai/characterai-launches-guided-stories-format-after-banning-teens-from-its-chatbots-133000131.html)
-- **Khanmigo Safety Features:** [Khan Academy Support](https://z3nhugorichard.zendesk.com/hc/en-us/articles/17901155424281-What-safety-features-does-Khanmigo-have)
+- **Khanmigo Safety Features:** [Khan Academy Support](https://support.khanacademy.org/hc/en-us/articles/17901155424281-What-safety-features-does-Khanmigo-have)
 - **ChatGPT Teen Accounts:** [Techlicious Review](https://www.techlicious.com/blog/teen-accounts-come-to-chatfpt-heres-what-parents-need-to-know/)
 - **PinwheelAsk / PinwheelGPT:** [Pinwheel Blog](https://blog.pinwheel.com/pinwheelgpt)
 - **Kitegate Open-Source Project:** [GitHub Repository](https://github.com/peter-manton/kitegate)
-- **Original Sprout Specifications:** [`Sprout_Core_Open_Source_Roadmap.md`](./Sprout_Core_Open_Source_Roadmap.md)
