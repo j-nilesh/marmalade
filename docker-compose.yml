@@ -1,5 +1,8 @@
 services:
   marmalade:
+    # Use prebuilt multi-arch image (fastest on Raspberry Pi / home servers):
+    # image: ghcr.io/j-nilesh/marmalade:latest
+    # Or compile locally from source:
     build:
       context: .
       dockerfile: Dockerfile
