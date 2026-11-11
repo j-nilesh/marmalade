@@ -11,6 +11,27 @@
 > **"Trust children. Govern the technology."**  
 > *Help children think, learn, research, play, and create, while giving parents meaningful control over the AI system—not an invasive surveillance feed of their children's conversations.*
 
+```text
+   ┌─────────────────────────────────────────────────────────────────────────┐
+   │                   🌿 🐱 MARMALADE TREEHOUSE 🌿                          │
+   │                                                                         │
+   │   ┌───────────────────────────┐       ┌───────────────────────────┐     │
+   │   │  ❓ Question Room         │       │  🧭 Field Guide           │     │
+   │   │  Bite-sized answers       │       │  Cited web research with  │     │
+   │   │  without endless scroll   │       │  safe Brave / SearXNG     │     │
+   │   └───────────────────────────┘       └───────────────────────────┘     │
+   │   ┌───────────────────────────┐       ┌───────────────────────────┐     │
+   │   │  📚 Study Nook            │       │  🎲 Game Loft             │     │
+   │   │  Socratic learning coach  │       │  Story Relay Studio,      │     │
+   │   │  that never does homework │       │  Trivia Arcade & 20Q      │     │
+   │   └───────────────────────────┘       └───────────────────────────┘     │
+   │                                                                         │
+   │   🛡️ Architectural Boundaries: Zero Transcript Surveillance             │
+   │   ⏳ Parental Governance: Daily Time Budgets & Cooldowns                │
+   │   🔒 Total Privacy: 100% Offline with Ollama or Encrypted Cloud API     │
+   └─────────────────────────────────────────────────────────────────────────┘
+```
+
 ---
 
 ## Why Marmalade?
@@ -79,8 +100,8 @@ Deploy your family's private treehouse in minutes to your favorite cloud provide
 | Provider | Guide / Deploy | Notes |
 | :--- | :--- | :--- |
 | **Fly.io** | [`fly.example.toml`](fly.example.toml) | Turnkey global edge deployment with persistent SQLite storage. |
-| **Railway** | [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app) | One-click Docker deploy with volume support. |
-| **Render** | [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com) | Docker Web Service with persistent disk. |
+| **Railway** | [Railway Deployment Guide](SELF_HOSTING.md#railway) | Docker deploy with persistent volume support. |
+| **Render** | [Render Deployment Guide](SELF_HOSTING.md#render) | Docker Web Service with persistent disk. |
 
 ---
 
@@ -103,7 +124,7 @@ Most kid software builds safety around surveillance. Marmalade builds safety int
 Marmalade connects to both local offline models and commercial cloud APIs:
 
 * **Ollama (100% Free & Offline)**: Run models locally on your home server, Raspberry Pi, Mac, or PC (`llama3.2`, `gemma2`, `mistral`). Zero API subscriptions or cloud bills.
-* **Anthropic Claude**: Exceptional conversational warmth, creative storytelling, and nuanced Socratic coaching (`claude-3-5-haiku`, `claude-3-5-sonnet`, `claude-3-7-sonnet`).
+* **Anthropic Claude**: Exceptional conversational warmth, creative storytelling, and nuanced Socratic coaching (`claude-haiku-5-5`, `claude-sonnet-5-5`).
 * **OpenAI**: Reliable general reasoning (`gpt-4o-mini`, `gpt-4o`).
 * **Google Gemini Note**: Google's API terms of service require users to be at least 18 years of age. To protect child privacy and strictly adhere to provider compliance rules, Marmalade automatically restricts Google Gemini for minor/child workspaces.
 * **Demo Mode**: Built-in mock responses for trying out the treehouse with zero keys or internet.

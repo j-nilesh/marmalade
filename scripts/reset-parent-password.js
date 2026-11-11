@@ -23,7 +23,7 @@ function hashPassword(password) {
 
 function parseArgs(args) {
   const parsed = {
-    db: process.env.DB_PATH || 'data/sprout.db',
+    db: process.env.SPROUT_DB_PATH || process.env.DB_PATH || process.env.DATABASE_PATH || 'data/sprout.db',
     username: null,
     password: null,
   };

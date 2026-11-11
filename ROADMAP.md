@@ -12,7 +12,7 @@
 - [x] **Child Safety & Crisis Intervention**: Standardized categories (`self_harm`, `abuse_unsafe_contact`, `sexual_content`, `illicit_weapons`, `dangerous_activities`, `pii_shared`) with immediate helpline support (US 988, UK 111, India 112/1098, International) and zero-transcript parent indicator logs.
 - [x] **AI Transparency Disclosures**: Subtle persistent indicator badge in child view + first-run explainer modal + "What your parent can see" privacy explainer.
 - [x] **Hardened Self-Hosting**: Progressive login rate limiting, encrypted API keys at rest (AES-256-GCM), 24h child session TTL, `noindex, nofollow` search exclusion.
-- [x] **Brave Web Search Integration**: Pluggable Brave Search API & SearXNG JSON adapter with domain allowlists and prompt-injection sanitization.
+- [x] **Brave Web Search Integration**: Pluggable Brave Search API & SearXNG JSON adapter with safety filtering and prompt-injection delimiter sanitization (domain allowlists planned in v1.x).
 
 ---
 

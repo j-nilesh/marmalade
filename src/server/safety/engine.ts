@@ -15,18 +15,18 @@ export interface SafetyCheckResult {
 }
 
 // Patterns representing immediate high-risk content calibrated to protect children
-// while not blocking legitimate school literature or history topics.
+// while not blocking legitimate school literature, science, or history topics.
 const IMMEDIATE_SELF_HARM =
-  /\b(?:how to commit suicide|suicide methods|cutting my wrists|cut myself|cutting myself|want to (?:die|end my life)|thinking about suicide|think about suicide|hang myself|hurt myself|kill myself(?!\s+(?:laughing|trying|working|eating)))\b/i;
+  /\b(?:how to commit suicide|suicide methods|cutting my wrists|(?:i\s+)?cut(?:ting)?\s+myself(?!\s+(?:on\s+paper|by\s+accident|accidentally|shaving|slicing|cooking))\b|i\s+(?:want to|feel like|plan to|might|going to)\s+hurt\s+myself|i\s+hurt\s+myself\s+on\s+purpose|thinking about suicide|think about suicide|hang myself|kill myself(?!\s+(?:laughing|trying|working|eating))|i\s+(?:really\s+)?want to (?:die|end my life)|makes?\s+me\s+want\s+to\s+die|i\s+(?:feel suicidal|wish i was dead|don't want to be alive anymore))\b/i;
 
 const IMMEDIATE_ABUSE_CONTACT =
-  /\b(?:someone is hurting me|hitting me at home|abusing me|touched me inappropriately|adult asked to meet in secret|afraid of my parents hurting me|my dad hits me|my mom hits me|being hit at home|physical abuse at home|parents are hurting me)\b/i;
+  /\b(?:someone is hurting me|hitting me at home|abusing me|touched me inappropriately|adult asked to meet in secret|afraid of my parents hurting me|my (?:dad|mom|stepdad|stepmom|uncle|aunt|brother|sister|parent) (?:hits|beats|touches) me|being hit at home|physical abuse at home|parents are hurting me)\b/i;
 
 const PARENTAL_DOMESTIC_ABUSE_PATTERN =
   /\b(?:dad|father|mom|mother|stepdad|stepmom|parents|at home|family)\b/i;
 
 const IMMEDIATE_WEAPONS_EXPLOSIVES =
-  /\b(?:how to (?:make|build|assemble|cook) (?:a\s+)?(?:(?:pipe\s+)?bomb|explosives|tnt|chemical weapon|poison gas|poison|lethal poison)|pipe bomb|mass shooting instructions)\b/i;
+  /\b(?:how to (?:make|build|assemble|cook)\s+(?:a\s+)?(?:(?:pipe\s+)?bomb|explosives|tnt|chemical weapon|poison gas|poison(?!\s+(?:ivy|oak|sumac)\b)|lethal poison)|pipe bomb|mass shooting instructions)\b/i;
 
 const EXPLOITATION_SEXUAL =
   /\b(?:csam|child sexual|solicit minor|explicit erotica|hardcore porn|sexual grooming|online grooming|adult grooming|grooming\s+(?:a\s+)?(?:child|minor|kid|teen|me))\b/i;
@@ -74,16 +74,15 @@ export class ApplicationSafetyLayer {
     }
 
     // 2. Abuse or unsafe contact check
-    // If the disclosure indicates parental/domestic abuse, show the child helplines immediately,
-    // but suppress alerting the parent dashboard to avoid endangering the child.
+    // When a child discloses abuse, show the child helplines immediately.
+    // Suppress alerting the parent dashboard to avoid endangering the child (especially if perpetrator is at home or unknown).
     if (IMMEDIATE_ABUSE_CONTACT.test(trimmed)) {
-      const isDomesticParental = PARENTAL_DOMESTIC_ABUSE_PATTERN.test(trimmed);
       return {
         allowed: false,
         flagged: true,
         category: 'abuse_unsafe_contact',
         severity: 'high',
-        suppressParentAlert: isDomesticParental,
+        suppressParentAlert: true,
         userFacingMessage: formatChildSupportMessage('abuse_unsafe_contact'),
       };
     }

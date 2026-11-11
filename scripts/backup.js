@@ -71,6 +71,7 @@ export function rotateBackups(backupDir, keepCount = 7) {
 export async function createBackup(options = {}) {
   const dbPath =
     options.dbPath ||
+    process.env.SPROUT_DB_PATH ||
     process.env.DB_PATH ||
     process.env.DATABASE_PATH ||
     'data/sprout.db';
@@ -136,6 +137,7 @@ export async function restoreBackup(options = {}) {
   const backupFile = options.backupFile;
   const targetDb =
     options.targetDb ||
+    process.env.SPROUT_DB_PATH ||
     process.env.DB_PATH ||
     process.env.DATABASE_PATH ||
     'data/sprout.db';

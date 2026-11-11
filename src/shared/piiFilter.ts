@@ -19,7 +19,22 @@ const COMMON_NON_NAME_WORDS = new Set([
   'practicing', 'an', 'a', 'the', 'in', 'at', 'from', 'with', 'only', 'also',
   'still', 'always', 'already', 'currently', 'now', 'new', 'old', 'little',
   'big', 'all', 'done', 'finished', 'about', 'able', 'afraid', 'proud', 'back',
-  'eleven', 'twelve', 'ten', 'nine', 'eight', 'seven', 'six', 'five', 'years', 'old'
+  'eleven', 'twelve', 'ten', 'nine', 'eight', 'seven', 'six', 'five', 'years', 'old',
+  'maybe', 'later', 'soon', 'song', 'crazy', 'tomorrow', 'tonight', 'yesterday', 'again'
+]);
+
+const GENERIC_SCHOOL_WORDS = new Set([
+  'in', 'at', 'what', 'why', 'how', 'when', 'is', 'the', 'a', 'an',
+  'about', 'junior', 'senior', 'musical', 'elementary', 'middle', 'high',
+  'my', 'your', 'our', 'their', 'some', 'any', 'every', 'each', 'all',
+  'good', 'bad', 'new', 'old', 'local', 'public', 'private', 'online'
+]);
+
+const LITERATURE_MEDIA_WORDS = new Set([
+  'poem', 'book', 'novel', 'play', 'story', 'song', 'track', 'album',
+  'quote', 'directed', 'illustrated', 'written', 'authored', 'composed',
+  'piece', 'reading', 'chapter', 'excerpt', 'passage', 'article', 'biography',
+  'tragedy', 'comedy', 'tale', 'ode', 'sonnet'
 ]);
 
 // Regexes for identifying common PII patterns
@@ -32,8 +47,15 @@ const createPhoneRegex = () =>
 const createAddressRegex = () =>
   /\b\d{1,5}[A-Za-z]?(?!\s+(?:BC|BCE|AD|CE)\b)(?:\s+(?!(?:in|the|at|on|by|of|from|bc|ad|bce|ce)\b)[A-Za-z0-9'-]+){1,4}\s+(?:Street|St\.?|Avenue|Ave\.?|Road|Rd\.?|Boulevard|Blvd\.?|Drive|Dr\.?|Lane|Ln\.?|Court|Ct\.?|Way|Highway|Hwy\.?|Circle|Cir\.?|Terrace|Ter\.?|Place|Pl\.?|Square|Sq\.?|Trail|Trl\.?|Parkway|Pkwy\.?)\b|\b(?:Apt|Apartment|Flat|Unit|Suite)\s+#?[0-9A-Za-z-]+,?\s+\d{1,5}[A-Za-z]?(?:\s+(?!(?:in|the|at|on|by|of|from|bc|ad|bce|ce)\b)[A-Za-z0-9'-]+){1,4}\b/gi;
 
-const createSchoolRegex = () =>
-  /\b(?:(?:attending|at|goes to|go to|enrolled at|my school is|i go to|for|from|behind|near|of)\s+)?([A-Za-z0-9.'\s]{2,35}(?:Elementary(?:\s+School)?|Middle School|High School|Grammar School|Charter School|Preparatory School))\b|\b(?:attending|at|goes to|go to|enrolled at|my school is|i go to)\s+([A-Za-z0-9.'\s]{2,35}(?:School|Academy|Prep|College|Campus))\b/gi;
+/**
+ * School patterns: requires explicit attendance/enrollment lead-in OR capitalized proper school name,
+ * avoiding false positives on generic phrases like "What do kids learn in high school?" or "High School Musical".
+ */
+const schoolLeadInRegex = () =>
+  /\b(attending|enrolled at|my school is|i go to|student at|goes to)\s+([\p{L}0-9.'\s]{2,40}?(?:Elementary(?:\s+School)?|Middle School|High School|Grammar School|Charter School|Preparatory School|Academy|Prep|School))\b/giu;
+
+const schoolProperRegex = () =>
+  /\b([\p{Lu}][\p{L}0-9.'-]+(?:\s+[\p{Lu}][\p{L}0-9.'-]+){0,3}\s+(?:Elementary(?:\s+School)?|Middle School|High School|Grammar School|Charter School|Preparatory School))(?!\s+Musical\b)\b/gu;
 
 /**
  * Redacts personal identifiers from user prompts.
@@ -72,22 +94,37 @@ export function redactPiiFromChildInput(input: string): PiiFilterResult {
     result = result.replace(createAddressRegex(), '[removed: address]');
   }
 
-  // 4. Mask school names
-  const schoolRegex = createSchoolRegex();
-  if (schoolRegex.test(result)) {
-    detectedTypes.push('school');
+  // 4. Mask school names (with enrollment lead-in or capitalized proper school name)
+  let schoolMatched = false;
+  const leadIn = schoolLeadInRegex();
+  if (leadIn.test(result)) {
+    schoolMatched = true;
     result = result.replace(
-      createSchoolRegex(),
-      (_match, p1, p2) => _match.replace(p1 || p2, '[removed: school name]')
+      schoolLeadInRegex(),
+      (_match, prefix) => prefix + ' [removed: school name]'
     );
+  }
+
+  const properSchool = schoolProperRegex();
+  if (properSchool.test(result)) {
+    result = result.replace(schoolProperRegex(), (match, school) => {
+      const firstWord = school.trim().split(/\s+/)[0].toLowerCase();
+      if (GENERIC_SCHOOL_WORDS.has(firstWord)) return match;
+      schoolMatched = true;
+      return '[removed: school name]';
+    });
+  }
+
+  if (schoolMatched) {
+    detectedTypes.push('school');
   }
 
   // 5. Mask full name self-introductions without mangling ordinary sentences
   let nameMatched = false;
 
-  // A) Explicit introduction: 'my name is <name>', 'call me <name>'
+  // A) Explicit introduction: 'my name is <name>', 'call me <name>' (supports unicode \p{L} for accented names)
   result = result.replace(
-    /\b(my name is|call me)\s+([A-Za-z'-]+(?:\s+[A-Za-z'-]+){0,2})\b/gi,
+    /\b(my name is|call me)\s+([\p{L}'-]+(?:\s+[\p{L}'-]+){0,2})\b/giu,
     (match, prefix, nameGroup) => {
       const words = nameGroup.trim().split(/\s+/);
       if (words.length === 0) return match;
@@ -97,9 +134,9 @@ export function redactPiiFromChildInput(input: string): PiiFilterResult {
     }
   );
 
-  // B) 'I am' or 'I\'m' followed by 1-3 capitalized proper words
+  // B) 'I am' or 'I\'m' followed by 1-3 capitalized proper words (supports unicode \p{Lu}\p{Ll})
   result = result.replace(
-    /\b(I\s+am|I'm|i\s+am|i'm)\s+([A-Z][a-z'-]+(?:\s+[A-Z][a-z'-]+){0,2})\b/g,
+    /\b(I\s+am|I'm|i\s+am|i'm)\s+([\p{Lu}][\p{Ll}'-]+(?:\s+[\p{Lu}][\p{Ll}'-]+){0,2})\b/gu,
     (match, prefix, nameGroup) => {
       const words = nameGroup.trim().split(/\s+/);
       if (words.length === 0) return match;
@@ -109,15 +146,31 @@ export function redactPiiFromChildInput(input: string): PiiFilterResult {
     }
   );
 
-  // C) Authorship / student headers: 'by <Name>', 'author: <Name>', 'student: <Name>'
+  // C) Authorship / student headers:
+  // 1. Explicit student headers: 'student: <Name>', 'by student: <Name>', 'homework by <Name>', 'report by <Name>'
   result = result.replace(
-    /\b(by|author:?|student:?)\s+([A-Z][a-z'-]+\s+[A-Z][a-z'-]+)\b/g,
+    /\b(student:?|by student:?|author is student:?|homework by|report by|project by|assignment by)\s+([\p{Lu}][\p{Ll}'-]+\s+([\p{Lu}][\p{Ll}'-]+))\b/giu,
     (match, prefix, nameGroup) => {
       const words = nameGroup.trim().split(/\s+/);
       if (words.length === 0) return match;
       if (COMMON_NON_NAME_WORDS.has(words[0].toLowerCase())) return match;
       nameMatched = true;
       return prefix + ' [removed: full name]';
+    }
+  );
+
+  // 2. Generic 'by <First Last>', but exclude literature/media references (e.g. 'poem by Robert Frost', 'book by Roald Dahl')
+  result = result.replace(
+    /(?:(\b[\p{L}]+)\s+)?\bby\s+([\p{Lu}][\p{Ll}'-]+(?:\s+[\p{Lu}][\p{Ll}'-]+)+)\b/gu,
+    (match, prevWord, nameGroup) => {
+      if (prevWord && LITERATURE_MEDIA_WORDS.has(prevWord.toLowerCase())) {
+        return match;
+      }
+      const words = nameGroup.trim().split(/\s+/);
+      if (words.length === 0) return match;
+      if (COMMON_NON_NAME_WORDS.has(words[0].toLowerCase())) return match;
+      nameMatched = true;
+      return (prevWord ? prevWord + ' ' : '') + 'by [removed: full name]';
     }
   );
 

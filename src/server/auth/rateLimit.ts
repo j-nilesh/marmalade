@@ -22,6 +22,7 @@ const MAX_MAP_ENTRIES = 5000;
 export class LoginRateLimiter {
   private readonly ipAttempts = new Map<string, AttemptRecord>();
   private readonly userAttempts = new Map<string, AttemptRecord>();
+  private readonly globalUserFailures = new Map<string, { count: number; lastAttemptMs: number }>();
   private lastSweepMs = 0;
 
   public checkRateLimit(
@@ -54,33 +55,58 @@ export class LoginRateLimiter {
     ip: string,
     username: string,
     nowMs = Date.now()
-  ): { retryAfterSeconds: number } {
+  ): { retryAfterSeconds: number; progressiveDelayMs: number } {
     this.maybeSweep(nowMs);
     const cleanIp = (ip || '127.0.0.1').trim();
-    const uKey = `${cleanIp}:${username.toLowerCase().trim()}`;
+    const userLower = username.toLowerCase().trim();
+    const uKey = `${cleanIp}:${userLower}`;
 
     const ipRec = this.recordKey(this.ipAttempts, cleanIp, nowMs);
     const userRec = this.recordKey(this.userAttempts, uKey, nowMs);
+
+    // Track global failures per username to impose progressive delay without locking out the account
+    let progressiveDelayMs = 0;
+    if (userLower) {
+      const uRec = this.globalUserFailures.get(userLower) || { count: 0, lastAttemptMs: nowMs };
+      if (nowMs - uRec.lastAttemptMs > WINDOW_MS) {
+        uRec.count = 1;
+      } else {
+        uRec.count += 1;
+      }
+      uRec.lastAttemptMs = nowMs;
+      this.globalUserFailures.set(userLower, uRec);
+
+      if (uRec.count >= 3) {
+        // Delay failed attempts: 3rd => 500ms, 4th => 1000ms, 5th => 1500ms, 6th+ => 2000ms
+        progressiveDelayMs = Math.min(2000, (uRec.count - 2) * 500);
+      }
+    }
 
     this.evictOldestIfOverCapacity(this.ipAttempts);
     this.evictOldestIfOverCapacity(this.userAttempts);
 
     const maxBlocked = Math.max(ipRec.blockedUntilMs, userRec.blockedUntilMs);
-    if (maxBlocked > nowMs) {
-      return { retryAfterSeconds: Math.ceil((maxBlocked - nowMs) / 1000) };
-    }
-    return { retryAfterSeconds: 0 };
+    const retryAfterSeconds = maxBlocked > nowMs ? Math.ceil((maxBlocked - nowMs) / 1000) : 0;
+
+    return { retryAfterSeconds, progressiveDelayMs };
   }
 
   public resetAttempts(ip: string, username: string): void {
     const cleanIp = (ip || '127.0.0.1').trim();
+    const userLower = username.toLowerCase().trim();
     this.ipAttempts.delete(cleanIp);
-    this.userAttempts.delete(`${cleanIp}:${username.toLowerCase().trim()}`);
+    this.userAttempts.delete(`${cleanIp}:${userLower}`);
+    this.globalUserFailures.delete(userLower);
   }
 
   public sweep(nowMs = Date.now()): void {
     this.pruneExpired(this.ipAttempts, nowMs);
     this.pruneExpired(this.userAttempts, nowMs);
+    for (const [user, rec] of this.globalUserFailures.entries()) {
+      if (nowMs - rec.lastAttemptMs > WINDOW_MS) {
+        this.globalUserFailures.delete(user);
+      }
+    }
   }
 
   public getEntryCounts(): { ipCount: number; userCount: number } {

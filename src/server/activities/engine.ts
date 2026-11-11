@@ -45,6 +45,11 @@ import { redactPiiFromChildInput } from '../../shared/piiFilter.js';
 
 export const TRANSIENT_SESSION_IDLE_TTL_MS = 15 * 60 * 1000; // 15 minutes transient memory expiry
 
+export function stripXmlDelimiters(text: string): string {
+  if (!text || typeof text !== 'string') return '';
+  return text.replace(/<\/?(?:student_question|student_direction|student_input|assignment_context|story_context|research_question|topic)[^>]*>/gi, '');
+}
+
 interface TriviaSessionInternal {
   kind: 'trivia_10';
   sessionId: string;
@@ -1070,7 +1075,7 @@ Respond ONLY with one of: YES, NO, PARTLY, or CANNOT_ANSWER, optionally followed
                 { role: 'system', content: evalPrompt },
                 {
                   role: 'user',
-                  content: `<student_question>${sanitizedQuestion}</student_question>`,
+                  content: `<student_question>${stripXmlDelimiters(sanitizedQuestion)}</student_question>`,
                 },
               ],
               maxOutputTokens: 800,
@@ -1537,7 +1542,7 @@ COACH_TIP: <one friendly, technical craft advice sentence>`;
             { role: 'system', content: prompt },
             {
               role: 'user',
-              content: `<story_context>\n${storyHistoryText}\n</story_context>\n\n<student_direction>\n${sanitizedDirection}\n</student_direction>\n\nPlease write the next passage incorporating my creative direction.`,
+              content: `<story_context>\n${stripXmlDelimiters(storyHistoryText)}\n</story_context>\n\n<student_direction>\n${stripXmlDelimiters(sanitizedDirection)}\n</student_direction>\n\nPlease write the next passage incorporating my creative direction.`,
             },
           ],
           maxOutputTokens: 800,
@@ -2240,7 +2245,7 @@ RULES:
                 ...conversationHistory,
                 {
                   role: 'user',
-                  content: `<assignment_context>${sess.assignmentContext}</assignment_context>\n\n<student_input>${sanitizedInput}</student_input>`,
+                  content: `<assignment_context>${stripXmlDelimiters(sess.assignmentContext)}</assignment_context>\n\n<student_input>${stripXmlDelimiters(sanitizedInput)}</student_input>`,
                 },
               ],
               maxOutputTokens: 800,
@@ -2396,7 +2401,7 @@ RULES:
             { role: 'assistant' as const, content: e.aiPrompt },
             { role: 'user' as const, content: e.studentResponse },
           ]),
-          { role: 'user', content: `<student_question>${sanitizedInput.slice(0, 6000)}</student_question>` },
+          { role: 'user', content: `<student_question>${stripXmlDelimiters(sanitizedInput.slice(0, 6000))}</student_question>` },
         ],
         maxOutputTokens: 800,
       },
@@ -2655,7 +2660,7 @@ ${creative ? `This is creative contribution ${sess.creativeTurns + 1} of at most
                 content: turn.assistantResponse.slice(-1500),
               },
             ]),
-            { role: 'user', content: `<student_question>${promptToSend.slice(-6000)}</student_question>` },
+            { role: 'user', content: `<student_question>${stripXmlDelimiters(promptToSend.slice(-6000))}</student_question>` },
           ],
           maxOutputTokens: 1200,
         },

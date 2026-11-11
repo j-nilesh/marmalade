@@ -29,6 +29,9 @@ COPY package*.json ./
 RUN npm ci --omit=dev
 
 COPY --from=builder /app/dist ./dist
+COPY scripts/ ./scripts/
+COPY THIRD_PARTY_NOTICES.md ./
+COPY src/client/fonts/OFL-*.txt ./dist/client/fonts/
 
 # Create persistent data volume directory and copy entrypoint script
 RUN mkdir -p /app/data && chown -R node:node /app

@@ -1,6 +1,7 @@
 import { Hono } from 'hono';
 import { bodyLimit } from 'hono/body-limit';
 import { randomUUID } from 'node:crypto';
+import { getConnInfo } from '@hono/node-server/conninfo';
 import { ProviderConnectionError } from './providers/errors.js';
 import { getCookie, setCookie, deleteCookie } from 'hono/cookie';
 import { existsSync, readFileSync } from 'node:fs';
@@ -26,6 +27,7 @@ export interface SproutAppOptions {
   dbPath?: string;
   clock?: () => number;
   serveStaticClient?: boolean;
+  trustProxy?: boolean;
 }
 
 export interface SproutAppInstance {
@@ -71,21 +73,42 @@ export function createSproutApp(
     );
   }
 
-  function getClientIp(c: { req: { header: (name: string) => string | undefined } }): string {
-    const flyIp = c.req.header('fly-client-ip')?.trim();
-    if (flyIp) return flyIp;
-    const cfIp = c.req.header('cf-connecting-ip')?.trim();
-    if (cfIp) return cfIp;
+  function getClientIp(c: any): string {
+    const isFly = Boolean(process.env.FLY_APP_NAME);
+    const envTrustProxy = process.env.TRUST_PROXY;
+    const shouldTrustProxy =
+      options.trustProxy ??
+      (isFly ||
+        (Boolean(envTrustProxy) &&
+          envTrustProxy !== 'false' &&
+          envTrustProxy !== '0'));
 
-    const xff = c.req.header('x-forwarded-for');
-    if (xff) {
-      const parts = xff.split(',').map((p) => p.trim()).filter(Boolean);
-      if (parts.length > 0) {
-        return parts[parts.length - 1];
+    if (shouldTrustProxy) {
+      const flyIp = c.req.header('fly-client-ip')?.trim();
+      if (flyIp) return flyIp;
+      const cfIp = c.req.header('cf-connecting-ip')?.trim();
+      if (cfIp) return cfIp;
+
+      const xff = c.req.header('x-forwarded-for');
+      if (xff) {
+        const parts = xff.split(',').map((p: string) => p.trim()).filter(Boolean);
+        if (parts.length > 0) {
+          return parts[parts.length - 1];
+        }
       }
+      const realIp = c.req.header('x-real-ip')?.trim();
+      if (realIp) return realIp;
     }
-    const realIp = c.req.header('x-real-ip')?.trim();
-    if (realIp) return realIp;
+
+    try {
+      const info = getConnInfo(c);
+      if (info?.remote?.address) {
+        return info.remote.address;
+      }
+    } catch {
+      // ignore
+    }
+
     return '127.0.0.1';
   }
 
@@ -582,7 +605,10 @@ export function createSproutApp(
 
     const authResult = db.authenticateUser(username, password, currentNow);
     if (!authResult) {
-      loginRateLimiter.recordFailedAttempt(ip, username, currentNow);
+      const failureResult = loginRateLimiter.recordFailedAttempt(ip, username, currentNow);
+      if (failureResult && failureResult.progressiveDelayMs > 0) {
+        await new Promise((resolve) => setTimeout(resolve, failureResult.progressiveDelayMs));
+      }
       return c.json(
         {
           error: 'INVALID_CREDENTIALS',
