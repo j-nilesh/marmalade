@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Marmalade Hero Banner</title>
+  <style>
+    @font-face {
+      font-family: 'Fredoka';
+      src: url('../../../src/client/fonts/fredoka-latin-wght-normal.woff2') format('woff2');
+      font-weight: 300 700;
+    }
+    @font-face {
+      font-family: 'Nunito';
+      src: url('../../../src/client/fonts/nunito-latin-wght-normal.woff2') format('woff2');
+      font-weight: 400 800;
+    }
+    @font-face {
+      font-family: 'Outfit';
+      src: url('../../../src/client/fonts/outfit-latin-wght-normal.woff2') format('woff2');
+      font-weight: 400 700;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      width: 1600px;
+      height: 600px;
+      overflow: hidden;
+      font-family: 'Nunito', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fbf3e4;
+      color: #1b2a23;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    body.dark {
+      background: #0f1612;
+      color: #f0f4f2;
+    }
+
+    .hero-container {
+      width: 1520px;
+      height: 520px;
+      background: #fffdf8;
+      border: 3px solid #e3d2b4;
+      border-radius: 36px;
+      box-shadow: 0 16px 48px -12px rgba(27, 42, 35, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 90px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    body.dark .hero-container {
+      background: #16201a;
+      border-color: #27382f;
+      box-shadow: 0 20px 60px -16px rgba(0, 0, 0, 0.6);
+    }
+
+    /* Ambient treehouse canopy decorations */
+    .canopy-circle-1 {
+      position: absolute;
+      width: 480px;
+      height: 480px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(106, 168, 79, 0.15) 0%, rgba(106, 168, 79, 0) 70%);
+      top: -160px;
+      right: 120px;
+      pointer-events: none;
+    }
+
+    body.dark .canopy-circle-1 {
+      background: radial-gradient(circle, rgba(58, 139, 104, 0.22) 0%, rgba(58, 139, 104, 0) 70%);
+    }
+
+    .canopy-circle-2 {
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(242, 120, 75, 0.12) 0%, rgba(242, 120, 75, 0) 70%);
+      bottom: -140px;
+      left: 60px;
+      pointer-events: none;
+    }
+
+    .left-col {
+      max-width: 880px;
+      z-index: 2;
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #eef3ef;
+      border: 1.5px solid #cfe0d5;
+      padding: 8px 18px;
+      border-radius: 999px;
+      font-size: 19px;
+      font-weight: 700;
+      color: #1f4d3a;
+      margin-bottom: 24px;
+      letter-spacing: 0.3px;
+    }
+
+    body.dark .badge-pill {
+      background: #1f2f26;
+      border-color: #2d4538;
+      color: #79c59f;
+    }
+
+    .badge-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #f2784b;
+    }
+
+    .brand-title {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 88px;
+      font-weight: 700;
+      line-height: 1.05;
+      color: #1b2a23;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    body.dark .brand-title {
+      color: #ffffff;
+    }
+
+    .leaf-icon {
+      display: inline-block;
+      width: 54px;
+      height: 54px;
+      vertical-align: middle;
+    }
+
+    .tagline {
+      font-family: 'Nunito', sans-serif;
+      font-size: 34px;
+      font-weight: 800;
+      line-height: 1.35;
+      color: #2c4236;
+      margin-bottom: 16px;
+    }
+
+    body.dark .tagline {
+      color: #dbe7df;
+    }
+
+    .philosophy {
+      font-size: 26px;
+      font-weight: 600;
+      color: #66746d;
+      letter-spacing: 0.2px;
+    }
+
+    body.dark .philosophy {
+      color: #9cb1a5;
+    }
+
+    .right-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+      position: relative;
+    }
+
+    .cat-speech-bubble {
+      background: #ffffff;
+      border: 2px solid #e3d2b4;
+      padding: 12px 24px;
+      border-radius: 20px;
+      font-weight: 800;
+      font-size: 20px;
+      color: #1f4d3a;
+      box-shadow: 0 6px 18px rgba(31, 77, 58, 0.08);
+      margin-bottom: 12px;
+      white-space: nowrap;
+    }
+
+    body.dark .cat-speech-bubble {
+      background: #1f2f26;
+      border-color: #334b3e;
+      color: #79c59f;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    .cat-wrapper {
+      width: 320px;
+      height: 320px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff8f0;
+      border-radius: 50%;
+      border: 3px dashed #ecd4b8;
+    }
+
+    body.dark .cat-wrapper {
+      background: #1a2720;
+      border-color: #2c3f34;
+    }
+
+    .cat-svg {
+      width: 250px;
+      height: 250px;
+    }
+  </style>
+</head>
+<body>
+  <div class="hero-container">
+    <div class="canopy-circle-1"></div>
+    <div class="canopy-circle-2"></div>
+    <div class="left-col">
+      <div class="badge-pill">
+        <span class="badge-dot"></span>
+        Self-Hosted · Offline with Ollama · Private by Design
+      </div>
+      <h1 class="brand-title">
+        Marmalade
+        <svg class="leaf-icon" viewBox="0 0 64 64" fill="none">
+          <path d="M12 52 C20 20 48 12 56 8 C54 28 42 46 16 52 Z" fill="#6aa84f"/>
+          <path d="M16 50 C26 38 40 24 54 10" stroke="#3f7a3a" stroke-width="3.5" stroke-linecap="round"/>
+        </svg>
+      </h1>
+      <p class="tagline">A private AI learning space for kids.</p>
+      <p class="philosophy">Trust children. Govern the technology.</p>
+    </div>
+    <div class="right-col">
+      <div class="cat-speech-bubble">Hi there! Welcome to the treehouse! 🐾</div>
+      <div class="cat-wrapper">
+        <svg class="cat-svg" viewBox="0 0 160 160">
+          <ellipse cx="80" cy="138" rx="46" ry="10" fill="rgba(31,77,58,0.12)" />
+          <!-- Tail -->
+          <path d="M104 118 C124 114 136 94 130 80 C126 72 116 74 114 82 C112 92 102 104 94 110" fill="none" stroke="#e8823f" stroke-width="9" stroke-linecap="round" />
+          <!-- Body -->
+          <ellipse cx="80" cy="108" rx="34" ry="26" fill="#f08c48" />
+          <ellipse cx="80" cy="111" rx="22" ry="18" fill="#fbe3c8" />
+          <!-- Back stripes -->
+          <path d="M72 88 l2 8 M80 87 l0 9 M88 88 l-2 8" stroke="#d26a2a" stroke-width="3.5" stroke-linecap="round" />
+          <!-- Head -->
+          <g class="cat-head">
+            <path d="M54 38 L58 9 L75 26 Z" fill="#f08c48" />
+            <path d="M106 38 L102 9 L85 26 Z" fill="#f08c48" />
+            <path d="M60 30 L62 16 L70 25 Z" fill="#f7b49a" />
+            <path d="M100 30 L98 16 L90 25 Z" fill="#f7b49a" />
+            <ellipse cx="80" cy="49" rx="31" ry="29" fill="#f08c48" />
+            <path d="M80 22 v11 M72 24 l3 9 M88 24 l-3 9" stroke="#d26a2a" stroke-width="3.5" stroke-linecap="round" />
+            <ellipse cx="80" cy="62" rx="15" ry="11.5" fill="#fbe3c8" />
+            <!-- Cheeks -->
+            <ellipse cx="61" cy="58" rx="6" ry="4" fill="#f2784b" opacity="0.6" />
+            <ellipse cx="99" cy="58" rx="6" ry="4" fill="#f2784b" opacity="0.6" />
+            <!-- Eyes (Happy arcs) -->
+            <path d="M63 48 Q68 43 73 48" fill="none" stroke="#1f3a2e" stroke-width="3.5" stroke-linecap="round" />
+            <path d="M87 48 Q92 43 97 48" fill="none" stroke="#1f3a2e" stroke-width="3.5" stroke-linecap="round" />
+            <!-- Nose & Mouth -->
+            <polygon points="80,57 77,54 83,54" fill="#d26a2a" />
+            <path d="M80 57 v4 M76 63 Q80 66 84 63" fill="none" stroke="#1f3a2e" stroke-width="2.5" stroke-linecap="round" />
+            <!-- Whiskers -->
+            <path d="M50 56 L34 54 M50 60 L32 62 M110 56 L126 54 M110 60 L128 62" stroke="#d26a2a" stroke-width="2.5" stroke-linecap="round" />
+          </g>
+          <!-- Paws -->
+          <ellipse cx="68" cy="130" rx="9" ry="7" fill="#fbe3c8" />
+          <ellipse cx="92" cy="130" rx="9" ry="7" fill="#fbe3c8" />
+          <!-- Waving paw up -->
+          <g transform="translate(14, -20) rotate(18 80 80)">
+            <ellipse cx="106" cy="86" rx="8" ry="7" fill="#fbe3c8" />
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
