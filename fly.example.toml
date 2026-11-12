@@ -14,9 +14,9 @@ primary_region = "iad"
 
 [env]
   NODE_ENV = "production"
-  SPROUT_PORT = "4120"
-  SPROUT_HOST = "0.0.0.0"
-  SPROUT_DB_PATH = "/app/data/marmalade.db"
+  MARMALADE_PORT = "4120"
+  MARMALADE_HOST = "0.0.0.0"
+  MARMALADE_DB_PATH = "/app/data/marmalade.db"
 
 [mounts]
   source = "marmalade_data"

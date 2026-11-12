@@ -1,0 +1,18 @@
+   ┌─────────────────────────────────────────────────────────────────────────┐
+   │                   🌿 🐱 MARMALADE TREEHOUSE 🌿                          │
+   │                                                                         │
+   │   ┌───────────────────────────┐       ┌───────────────────────────┐     │
+   │   │  ❓ Question Room         │       │  🧭 Field Guide           │     │
+   │   │  Bite-sized answers       │       │  Cited web research with  │     │
+   │   │  without endless scroll   │       │  safe Brave / SearXNG     │     │
+   │   └───────────────────────────┘       └───────────────────────────┘     │
+   │   ┌───────────────────────────┐       ┌───────────────────────────┐     │
+   │   │  📚 Study Nook            │       │  🎲 Game Loft             │     │
+   │   │  Socratic learning coach  │       │  Story Relay Studio,      │     │
+   │   │  that never does homework │       │  Trivia Arcade & 20Q      │     │
+   │   └───────────────────────────┘       └───────────────────────────┘     │
+   │                                                                         │
+   │   🛡️ Architectural Boundaries: Zero Transcript Surveillance             │
+   │   ⏳ Parental Governance: Daily Time Budgets & Cooldowns                │
+   │   🔒 Total Privacy: 100% Offline with Ollama or Encrypted Cloud API     │
+   └─────────────────────────────────────────────────────────────────────────┘

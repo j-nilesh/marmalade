@@ -13,7 +13,8 @@ export interface ProviderConditionCheck {
   id: string;
   label: string;
   description: string;
-  satisfiedBySprout: boolean;
+  satisfiedByMarmalade: boolean;
+  satisfiedBySprout?: boolean;
   requiredParentAction?: string;
 }
 
@@ -60,6 +61,7 @@ export const PROVIDER_POLICY_MATRIX: Record<string, ProviderPolicyDefinition> = 
         label: 'Content moderation & filtering',
         description:
           'Input screening, rate limits, and output safety checks prevent inappropriate content.',
+        satisfiedByMarmalade: true,
         satisfiedBySprout: true,
       },
       {
@@ -67,6 +69,7 @@ export const PROVIDER_POLICY_MATRIX: Record<string, ProviderPolicyDefinition> = 
         label: 'Safety monitoring with parent escalation',
         description:
           'Standardized safety indicators (self-harm, unsafe contact) alert parents without transcript surveillance.',
+        satisfiedByMarmalade: true,
         satisfiedBySprout: true,
       },
       {
@@ -74,13 +77,15 @@ export const PROVIDER_POLICY_MATRIX: Record<string, ProviderPolicyDefinition> = 
         label: 'Clear AI disclosure in child workspace',
         description:
           'Persistent disclosure line and first-run explainer inform the child they are interacting with an AI.',
+        satisfiedByMarmalade: true,
         satisfiedBySprout: true,
       },
       {
         id: 'child_safety_prompt',
         label: 'Anthropic child-safety system prompt composed into calls',
         description:
-          'Sprout automatically injects Anthropic’s minor safety guidelines into the API system prompt.',
+          'Marmalade automatically injects Anthropic’s minor safety guidelines into the API system prompt.',
+        satisfiedByMarmalade: true,
         satisfiedBySprout: true,
       },
       {
@@ -88,6 +93,7 @@ export const PROVIDER_POLICY_MATRIX: Record<string, ProviderPolicyDefinition> = 
         label: 'Parental supervision and legal authorization',
         description:
           'I confirm that as the supervising parent or guardian, I authorize this instance and accept Anthropic Commercial Terms.',
+        satisfiedByMarmalade: false,
         satisfiedBySprout: false,
         requiredParentAction: 'Confirm parental authorization',
       },
@@ -110,6 +116,7 @@ export const PROVIDER_POLICY_MATRIX: Record<string, ProviderPolicyDefinition> = 
         label: 'Age-appropriate filters and guardrails',
         description:
           'Turn limits, Socratic guidance, and dangerous content screening prevent harmful interactions.',
+        satisfiedByMarmalade: true,
         satisfiedBySprout: true,
       },
       {
@@ -117,6 +124,7 @@ export const PROVIDER_POLICY_MATRIX: Record<string, ProviderPolicyDefinition> = 
         label: 'AI disclosure to the student',
         description:
           'Persistent notice informs the child they are talking to an AI that can make mistakes.',
+        satisfiedByMarmalade: true,
         satisfiedBySprout: true,
       },
       {
@@ -124,6 +132,7 @@ export const PROVIDER_POLICY_MATRIX: Record<string, ProviderPolicyDefinition> = 
         label: 'Current flagship model configuration',
         description:
           'Configured to current safety-aligned models (e.g., GPT-4o, GPT-4o-mini).',
+        satisfiedByMarmalade: true,
         satisfiedBySprout: true,
       },
       {
@@ -131,6 +140,7 @@ export const PROVIDER_POLICY_MATRIX: Record<string, ProviderPolicyDefinition> = 
         label: 'Under-13 Zero Data Retention approval',
         description:
           'If the child using this workspace is under 13, Zero Data Retention (ZDR) must be requested and active on your OpenAI account.',
+        satisfiedByMarmalade: false,
         satisfiedBySprout: false,
         requiredParentAction: 'Confirm ZDR status for under-13 use',
       },
@@ -139,6 +149,7 @@ export const PROVIDER_POLICY_MATRIX: Record<string, ProviderPolicyDefinition> = 
         label: 'Parental supervision confirmation',
         description:
           'I confirm that I supervise this connection under OpenAI API Terms of Use.',
+        satisfiedByMarmalade: false,
         satisfiedBySprout: false,
         requiredParentAction: 'Confirm supervision under OpenAI terms',
       },
@@ -159,6 +170,7 @@ export const PROVIDER_POLICY_MATRIX: Record<string, ProviderPolicyDefinition> = 
         label: 'PII filter enabled for child prompts',
         description:
           'Automatically strip names, addresses, emails, and school details before transmitting queries.',
+        satisfiedByMarmalade: true,
         satisfiedBySprout: true,
       },
       {
@@ -166,6 +178,7 @@ export const PROVIDER_POLICY_MATRIX: Record<string, ProviderPolicyDefinition> = 
         label: 'Parental consent verified',
         description:
           'Supervising parent confirms consent to process non-PII queries on Mistral API.',
+        satisfiedByMarmalade: false,
         satisfiedBySprout: false,
         requiredParentAction: 'Confirm parental consent',
       },
@@ -185,7 +198,8 @@ export const PROVIDER_POLICY_MATRIX: Record<string, ProviderPolicyDefinition> = 
         id: 'family_responsibility',
         label: 'Family responsibility for local model behavior',
         description:
-          'Open-weights models lack external vendor trust & safety filters; Sprout application-level filters remain active.',
+          'Open-weights models lack external vendor trust & safety filters; Marmalade application-level filters remain active.',
+        satisfiedByMarmalade: false,
         satisfiedBySprout: false,
         requiredParentAction: 'Acknowledge local model responsibility',
       },

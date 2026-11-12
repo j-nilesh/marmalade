@@ -22,8 +22,16 @@ function hashPassword(password) {
 }
 
 function parseArgs(args) {
+  const defaultDb = fs.existsSync('data/marmalade.db')
+    ? 'data/marmalade.db'
+    : (fs.existsSync('data/sprout.db') ? 'data/sprout.db' : 'data/marmalade.db');
   const parsed = {
-    db: process.env.SPROUT_DB_PATH || process.env.DB_PATH || process.env.DATABASE_PATH || 'data/sprout.db',
+    db:
+      process.env.MARMALADE_DB_PATH ||
+      process.env.SPROUT_DB_PATH ||
+      process.env.DB_PATH ||
+      process.env.DATABASE_PATH ||
+      defaultDb,
     username: null,
     password: null,
   };
@@ -42,7 +50,7 @@ Usage:
   node scripts/reset-parent-password.js [options]
 
 Options:
-  --db <path>          Path to sqlite database (default: data/sprout.db or DB_PATH)
+  --db <path>          Path to sqlite database (default: data/marmalade.db or MARMALADE_DB_PATH)
   --username, -u <usr> Username of parent account (auto-detected if only 1 parent exists)
   --password, -p <pwd> New password (prompted interactively if omitted)
   --help, -h           Show this help message

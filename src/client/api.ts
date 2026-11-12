@@ -26,7 +26,11 @@ export async function api<T = any>(
     try {
       response = await fetch(`/api${path}`, {
         method,
-        headers: { 'Content-Type': 'application/json', 'X-Sprout-CSRF': csrf },
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Marmalade-CSRF': csrf,
+          'X-Sprout-CSRF': csrf,
+        },
         body: body === undefined ? undefined : JSON.stringify(body),
       });
     } catch {
@@ -43,8 +47,10 @@ export async function api<T = any>(
 
     const data = await response.json().catch(() => null);
     if (!response.ok) {
-      if (response.status === 401)
+      if (response.status === 401) {
+        window.dispatchEvent(new Event('marmalade-session-expired'));
         window.dispatchEvent(new Event('sprout-session-expired'));
+      }
 
       // If it is a transient proxy or provider hiccup (502/503/504), retry once before throwing
       const isTransient = response.status >= 502 && response.status <= 504;

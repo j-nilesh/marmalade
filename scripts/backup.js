@@ -46,7 +46,7 @@ export function rotateBackups(backupDir, keepCount = 7) {
 
   const files = fs
     .readdirSync(backupDir)
-    .filter((f) => /^sprout_backup_.*\.db$/.test(f))
+    .filter((f) => /^(marmalade|sprout)_backup_.*\.db$/.test(f))
     .map((f) => {
       const fullPath = path.join(backupDir, f);
       const stat = fs.statSync(fullPath);
@@ -69,12 +69,16 @@ export function rotateBackups(backupDir, keepCount = 7) {
  * Create a safe, verified online backup.
  */
 export async function createBackup(options = {}) {
+  const defaultDb = fs.existsSync('data/marmalade.db')
+    ? 'data/marmalade.db'
+    : (fs.existsSync('data/sprout.db') ? 'data/sprout.db' : 'data/marmalade.db');
   const dbPath =
     options.dbPath ||
+    process.env.MARMALADE_DB_PATH ||
     process.env.SPROUT_DB_PATH ||
     process.env.DB_PATH ||
     process.env.DATABASE_PATH ||
-    'data/sprout.db';
+    defaultDb;
   const backupDir = options.backupDir || process.env.BACKUP_DIR || 'backups';
   const keepCount =
     Number(options.keepCount ?? process.env.BACKUP_KEEP) || 7;
@@ -93,7 +97,7 @@ export async function createBackup(options = {}) {
   const now = new Date();
   const pad = (n) => String(n).padStart(2, '0');
   const timestamp = `${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}_${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}`;
-  const targetFile = path.join(backupDir, `sprout_backup_${timestamp}.db`);
+  const targetFile = path.join(backupDir, `marmalade_backup_${timestamp}.db`);
 
   // 3. Perform online backup via better-sqlite3 C++ API
   if (verbose) console.log(`Creating online SQLite backup at: ${targetFile}`);
@@ -135,12 +139,16 @@ export async function createBackup(options = {}) {
  */
 export async function restoreBackup(options = {}) {
   const backupFile = options.backupFile;
+  const defaultDb = fs.existsSync('data/marmalade.db')
+    ? 'data/marmalade.db'
+    : (fs.existsSync('data/sprout.db') ? 'data/sprout.db' : 'data/marmalade.db');
   const targetDb =
     options.targetDb ||
+    process.env.MARMALADE_DB_PATH ||
     process.env.SPROUT_DB_PATH ||
     process.env.DB_PATH ||
     process.env.DATABASE_PATH ||
-    'data/sprout.db';
+    defaultDb;
   const verbose = options.verbose ?? true;
 
   if (!backupFile) {
@@ -234,11 +242,11 @@ Usage:
   node scripts/backup.js --verify <db-file>
 
 Options:
-  --db, -d <path>         Path to source SQLite database (default: data/sprout.db or DB_PATH)
+  --db, -d <path>         Path to source SQLite database (default: data/marmalade.db or MARMALADE_DB_PATH)
   --dir, -b <dir>         Directory to store backups (default: backups or BACKUP_DIR)
   --keep, -k <count>      Number of historical backups to retain (default: 7 or BACKUP_KEEP)
   --restore <file>        Restore database from a backup file (cleans stale -wal/-shm)
-  --target, -t <path>     Target database path for restore (default: data/sprout.db)
+  --target, -t <path>     Target database path for restore (default: data/marmalade.db)
   --verify <file>         Run PRAGMA quick_check on database file
   --help, -h              Show this help message
 `);

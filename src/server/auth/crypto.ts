@@ -57,7 +57,10 @@ function getPersistentSecret(): string {
   }
 
   try {
-    const dbPath = process.env.SPROUT_DB_PATH || path.join(process.cwd(), 'data', 'sprout.db');
+    const dbPath =
+      process.env.MARMALADE_DB_PATH ||
+      process.env.SPROUT_DB_PATH ||
+      path.join(process.cwd(), 'data', 'marmalade.db');
     const secretDir = path.dirname(dbPath);
     const secretPath = path.join(secretDir, '.encryption_secret');
 

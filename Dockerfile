@@ -19,9 +19,9 @@ FROM node:20-alpine AS runner
 
 WORKDIR /app
 ENV NODE_ENV=production
-ENV SPROUT_PORT=4120
-ENV SPROUT_HOST=0.0.0.0
-ENV SPROUT_DB_PATH=/app/data/sprout.db
+ENV MARMALADE_PORT=4120
+ENV MARMALADE_HOST=0.0.0.0
+ENV MARMALADE_DB_PATH=/app/data/marmalade.db
 
 RUN apk add --no-cache python3 make g++ su-exec
 

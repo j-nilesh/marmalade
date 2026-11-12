@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+message: "If you use or reference Marmalade in research, education, or software projects, please cite it as below."
+authors:
+  - family-names: "Jahagirdar"
+    given-names: "Nilesh"
+title: "Marmalade"
+version: 1.2.0
+date-released: 2026-11-11
+license: MIT
+repository-code: "https://github.com/j-nilesh/marmalade"
+url: "https://github.com/j-nilesh/marmalade"
+abstract: "A private, self-hosted AI companion and learning sanctuary for kids. Parents set the limits. Kids keep their thoughts."
