@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Marmalade Section Heading</title>
+  <style>
+    @font-face {
+      font-family: 'Fredoka';
+      src: url('../../../src/client/fonts/fredoka-latin-wght-normal.woff2') format('woff2');
+      font-weight: 300 700;
+    }
+    @font-face {
+      font-family: 'Nunito';
+      src: url('../../../src/client/fonts/nunito-latin-wght-normal.woff2') format('woff2');
+      font-weight: 400 800;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      width: 1600px;
+      height: 160px;
+      overflow: hidden;
+      font-family: 'Nunito', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fbf3e4;
+      color: #1b2a23;
+    }
+
+    body.dark {
+      background: #0d1117;
+      color: #f0f4f2;
+    }
+
+    .banner-container {
+      width: 1540px;
+      height: 130px;
+      background: #ffffff;
+      border: 2px solid #e8dec8;
+      border-radius: 24px;
+      box-shadow: 0 8px 24px -8px rgba(27, 42, 35, 0.08);
+      display: flex;
+      align-items: center;
+      padding: 0 48px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    body.dark .banner-container {
+      background: #161b22;
+      border-color: #30363d;
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    }
+
+    .accent-bar {
+      width: 8px;
+      height: 64px;
+      background: #f2784b;
+      border-radius: 4px;
+      margin-right: 28px;
+      flex-shrink: 0;
+    }
+
+    body.dark .accent-bar {
+      background: #f58d65;
+    }
+
+    .text-group {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .kicker {
+      font-size: 14px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #1f4d3a;
+      margin-bottom: 4px;
+    }
+
+    body.dark .kicker {
+      color: #56d364;
+    }
+
+    .heading-title {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 42px;
+      font-weight: 700;
+      color: #1b2a23;
+      letter-spacing: -0.5px;
+      line-height: 1.15;
+    }
+
+    body.dark .heading-title {
+      color: #f0f6fc;
+    }
+
+    .cat-paw-watermark {
+      position: absolute;
+      right: 36px;
+      opacity: 0.12;
+      pointer-events: none;
+    }
+
+    body.dark .cat-paw-watermark {
+      opacity: 0.08;
+    }
+  </style>
+</head>
+<body>
+  <div class="banner-container">
+    <div class="accent-bar" id="accentBar"></div>
+    <div class="text-group">
+      <div class="kicker" id="kickerText">ARCHITECTURE & BOUNDARIES</div>
+      <h2 class="heading-title" id="titleText">A treehouse, not a chatbot</h2>
+    </div>
+    <div class="cat-paw-watermark">
+      <svg width="100" height="100" viewBox="0 0 100 100" fill="currentColor">
+        <circle cx="28" cy="30" r="12" />
+        <circle cx="50" cy="20" r="12" />
+        <circle cx="72" cy="30" r="12" />
+        <ellipse cx="50" cy="65" rx="30" ry="24" />
+      </svg>
+    </div>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const title = params.get('title');
+    const kicker = params.get('kicker');
+    const theme = params.get('theme');
+    const accent = params.get('accent');
+
+    if (title) document.getElementById('titleText').textContent = title;
+    if (kicker) document.getElementById('kickerText').textContent = kicker;
+    if (theme === 'dark') document.body.classList.add('dark');
+    if (accent) document.getElementById('accentBar').style.background = accent;
+  </script>
+</body>
+</html>

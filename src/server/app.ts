@@ -28,6 +28,8 @@ import { isProviderAllowedForMinors } from '../shared/providerPolicy.js';
 
 export const SESSION_COOKIE_NAME = 'marmalade_session';
 export const LEGACY_SESSION_COOKIE_NAME = 'sprout_session';
+export const CSRF_HEADER_NAME = 'X-Marmalade-CSRF';
+export const LEGACY_CSRF_HEADER_NAME = 'X-Sprout-CSRF';
 
 export interface MarmaladeAppOptions {
   dbPath?: string;

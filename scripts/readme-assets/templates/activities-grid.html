@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Marmalade Activities Grid</title>
+  <style>
+    @font-face {
+      font-family: 'Fredoka';
+      src: url('../../../src/client/fonts/fredoka-latin-wght-normal.woff2') format('woff2');
+      font-weight: 300 700;
+    }
+    @font-face {
+      font-family: 'Nunito';
+      src: url('../../../src/client/fonts/nunito-latin-wght-normal.woff2') format('woff2');
+      font-weight: 400 800;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      width: 1600px;
+      height: 640px;
+      overflow: hidden;
+      font-family: 'Nunito', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fbf3e4;
+      color: #1b2a23;
+    }
+
+    body.dark {
+      background: #0d1117;
+      color: #f0f4f2;
+    }
+
+    .grid-container {
+      width: 1540px;
+      height: 580px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    .tile-card {
+      background: #ffffff;
+      border: 2px solid #e5dbcb;
+      border-radius: 24px;
+      padding: 30px;
+      box-shadow: 0 8px 24px -8px rgba(27, 42, 35, 0.08);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    body.dark .tile-card {
+      background: #161b22;
+      border-color: #30363d;
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    }
+
+    .tile-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+
+    .tile-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      flex-shrink: 0;
+    }
+
+    .icon-ask { background: #eaf3ed; color: #2e7d52; }
+    .icon-research { background: #ebf5fa; color: #21739c; }
+    .icon-study { background: #fdf2e9; color: #c45b20; }
+    .icon-loft { background: #fbf0f5; color: #9d3b6f; }
+    .icon-chest { background: #fef8e7; color: #a47814; }
+    .icon-cat { background: #fdeee7; color: #e86427; }
+
+    body.dark .icon-ask { background: #1a3325; color: #56d364; }
+    body.dark .icon-research { background: #132d3e; color: #58a6ff; }
+    body.dark .icon-study { background: #3b2214; color: #f0883e; }
+    body.dark .icon-loft { background: #361729; color: #d2a8ff; }
+    body.dark .icon-chest { background: #382c12; color: #e3b341; }
+    body.dark .icon-cat { background: #3d1c10; color: #ff7b72; }
+
+    .tile-title {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: #1b2a23;
+      line-height: 1.1;
+    }
+
+    body.dark .tile-title {
+      color: #f0f6fc;
+    }
+
+    .tile-desc {
+      font-size: 19px;
+      font-weight: 600;
+      line-height: 1.45;
+      color: #55665d;
+    }
+
+    body.dark .tile-desc {
+      color: #8b949e;
+    }
+  </style>
+</head>
+<body>
+  <div class="grid-container">
+    <!-- 1. Question Room -->
+    <div class="tile-card">
+      <div class="tile-header">
+        <div class="tile-icon icon-ask">💬</div>
+        <h3 class="tile-title">Question Room</h3>
+      </div>
+      <p class="tile-desc">Bite-sized explanations with conversational boundaries. Capped at 8 turns to keep questions focused.</p>
+    </div>
+
+    <!-- 2. Field Guide -->
+    <div class="tile-card">
+      <div class="tile-header">
+        <div class="tile-icon icon-research">🧭</div>
+        <h3 class="tile-title">Field Guide</h3>
+      </div>
+      <p class="tile-desc">Safe, ad-free web research with numbered source cards and verifiable links from Brave or SearXNG.</p>
+    </div>
+
+    <!-- 3. Study Nook -->
+    <div class="tile-card">
+      <div class="tile-header">
+        <div class="tile-icon icon-study">📖</div>
+        <h3 class="tile-title">Study Nook</h3>
+      </div>
+      <p class="tile-desc">Socratic homework guidance calibrated to child age (6–16). It coaches with questions, never writes the essay.</p>
+    </div>
+
+    <!-- 4. Game Loft -->
+    <div class="tile-card">
+      <div class="tile-header">
+        <div class="tile-icon icon-loft">🎲</div>
+        <h3 class="tile-title">Game Loft</h3>
+      </div>
+      <p class="tile-desc">Interactive 6-act Story Relay with craft coaching, 10-question Trivia Arcade, and 20 Questions with clear finish lines.</p>
+    </div>
+
+    <!-- 5. Treasure Chest -->
+    <div class="tile-card">
+      <div class="tile-header">
+        <div class="tile-icon icon-chest">⭐</div>
+        <h3 class="tile-title">Treasure Chest</h3>
+      </div>
+      <p class="tile-desc">Explicitly saved work notebook where children collect completed stories, research notes, and Markdown exports.</p>
+    </div>
+
+    <!-- 6. Marmalade the Cat -->
+    <div class="tile-card">
+      <div class="tile-header">
+        <div class="tile-icon icon-cat">🐾</div>
+        <h3 class="tile-title">Marmalade the Cat</h3>
+      </div>
+      <p class="tile-desc">A playful treehouse companion who purrs, loafs, and celebrates learning while honestly stating she is an AI helper.</p>
+    </div>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('theme') === 'dark') document.body.classList.add('dark');
+  </script>
+</body>
+</html>
