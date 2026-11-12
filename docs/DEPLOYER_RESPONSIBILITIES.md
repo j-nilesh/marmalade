@@ -2,7 +2,7 @@
 
 *A guide for parents, guardians, educators, and technical administrators deploying Marmalade.*
 
-When you self-host Marmalade, **you (or your household / school) act as the deployer and organization** under the commercial terms of your chosen AI providers and applicable privacy laws.
+When you self-host Marmalade, **you (or your household) act as the deployer and organization** under the commercial terms of your chosen AI providers and applicable privacy laws.
 
 > [!NOTE]
 > **Disclaimer:** This guide provides practical operational instructions and is not legal advice. Laws and provider terms vary by jurisdiction and change over time.
@@ -15,7 +15,7 @@ When using third-party AI APIs (such as Anthropic or OpenAI), the API account be
 
 - **Anthropic Claude:**
   - You must accept Anthropic Commercial Terms and review their minors guidance.
-  - Marmalade automatically handles content filtering, system prompts, and AI disclosure, but you must ensure your household or school account complies with their policies.
+  - Marmalade automatically handles content filtering, system prompts, and AI disclosure, but you must ensure your household account complies with their policies.
 - **OpenAI:**
   - You must accept OpenAI Terms of Use and follow their Under-18 API Guidance.
   - Recommended models are safety-aligned models such as `gpt-4o-mini` or `gpt-4o` with system instructions.
