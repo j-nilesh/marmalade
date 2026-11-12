@@ -9,8 +9,12 @@ services:
     container_name: marmalade
     restart: unless-stopped
     ports:
-      # Bind to host port 4120
-      - "4120:4120"
+      # Host port binding:
+      # - Default: "127.0.0.1:4120:4120" (binds to localhost only; prevents unauthenticated LAN exposure)
+      # - Home Wi-Fi / LAN: Set MARMALADE_BIND_IP=0.0.0.0 in .env to allow tablets/laptops on home Wi-Fi
+      # - Public internet / VPS: NEVER expose raw HTTP 4120 directly. Always place behind a reverse proxy
+      #   (Caddy, Nginx, Cloudflare Tunnel) terminating HTTPS, and configure SETUP_TOKEN in .env.
+      - "${MARMALADE_BIND_IP:-127.0.0.1}:4120:4120"
     volumes:
       # Persistent local database volume
       - ./data:/app/data

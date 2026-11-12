@@ -27,7 +27,12 @@ cd marmalade
 docker compose up -d
 ```
 
-Open `http://localhost:4120` in your browser to complete the initial family setup.
+### Initial First-Run Experience
+
+1. Open **`http://localhost:4120`** in your browser.
+2. Complete the **60-second household setup**: choose your parent password, your child's username, and time zone. (If `SETUP_TOKEN` is configured, enter the token to initialize).
+3. Once initialized, Marmalade opens in **Demo Mode** using the built-in deterministic mock provider—allowing you and your child to explore Ask, Research, Schoolwork, and Play with full sample responses and zero setup or API costs.
+4. When you're ready, visit **Parent Settings** (`/parent`) to connect free offline Ollama or a commercial provider.
 
 ### Running with 100% Free, Offline AI (Ollama)
 To run Marmalade completely offline with zero API keys or cloud bills:
@@ -48,6 +53,63 @@ To enable private web search without any external API:
 docker compose --profile research up -d
 ```
 Then in **Parent Settings → Web Research**, configure the SearXNG endpoint at `http://searxng:8080/search`.
+
+---
+
+## Network Security & Access Control
+
+Marmalade is designed for single-family private hosting. Choose the network binding appropriate for your environment:
+
+### A. Localhost Only (Safest Default for a Single Computer)
+By default, `docker-compose.yml` binds to `127.0.0.1:4120`. Marmalade is accessible exclusively from the computer running Docker. No devices on your local Wi-Fi or the internet can reach the application.
+
+### B. Home Wi-Fi / LAN Access (For Family Tablets and Laptops)
+To allow children to access Marmalade from iPads, laptops, or other devices on your home Wi-Fi:
+1. In your `.env` file, set:
+   ```env
+   MARMALADE_BIND_IP=0.0.0.0
+   ```
+2. Restart the container:
+   ```bash
+   docker compose up -d
+   ```
+3. Family devices on your home network can then navigate to `http://<server-ip>:4120` (e.g. `http://192.168.1.150:4120`).
+4. **Important Security Precautions:**
+   - Only bind to `0.0.0.0` on a private, password-protected home network behind your router's NAT firewall.
+   - **Never forward port 4120** on your router directly to the public internet without HTTPS and authentication.
+
+### C. Public Cloud, VPS, or Remote Internet Exposure
+If hosting Marmalade on a remote VPS (Hetzner, DigitalOcean, Linode, AWS) or accessing your instance from outside your home:
+1. **Never expose raw HTTP port 4120 directly to the internet.**
+2. Place Marmalade behind a reverse proxy terminating TLS/HTTPS, such as **Caddy**, **Nginx**, **Cloudflare Tunnel**, or a private mesh VPN like **Tailscale**.
+3. **Always configure `SETUP_TOKEN`** in `.env` before starting the server. This prevents internet scanners or strangers from claiming first-run household setup.
+4. Set `TRUST_PROXY=true` in `.env` so rate limiting properly identifies client IPs behind your reverse proxy.
+
+#### Example Caddy Configuration
+```caddyfile
+marmalade.yourfamily.com {
+    reverse_proxy 127.0.0.1:4120
+}
+```
+
+#### Example Nginx Configuration
+```nginx
+server {
+    listen 443 ssl http2;
+    server_name marmalade.yourfamily.com;
+
+    ssl_certificate /etc/letsencrypt/live/marmalade.yourfamily.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/marmalade.yourfamily.com/privkey.pem;
+
+    location / {
+        proxy_pass http://127.0.0.1:4120;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
 
 ---
 
@@ -144,6 +206,8 @@ Marmalade connects directly to the providers of your choice. Keys are stored enc
 | **Anthropic Claude** | Warmest conversational tone, best Socratic coaching | `claude-haiku-5-5`, `claude-sonnet-5-5` |
 | **OpenAI** | Solid general reasoning | `gpt-4o-mini`, `gpt-4o` |
 
+> **OpenAI Under-18 API Guidance**: OpenAI permits under-18 use with age-appropriate guardrails, AI disclosure, and safety-aligned models (such as `gpt-4o-mini` or `gpt-4o`). For children under 13, you act as the parent operator under COPPA, and Zero Data Retention (ZDR) must be active on your OpenAI organization account. Confirm ZDR directly with OpenAI; Marmalade records parent self-acknowledgment and tests connectivity.
+
 > **Note on Google Gemini**: Google's API Terms of Service require developers and end users to be at least 18 years of age. In strict compliance with child protection guidelines and provider policies, Marmalade restricts Google Gemini for minor/child workspaces.
 
 ---
@@ -153,8 +217,8 @@ Marmalade connects directly to the providers of your choice. Keys are stored enc
 Children can safely research school topics using independent web search:
 
 1. **Brave Search API (Recommended)**:
-   - Sign up for a free developer account at [brave.com/search/api](https://api.search.brave.com/).
-   - Generous free tier: **2,000 queries per month** at zero cost.
+   - Sign up for a developer account at [brave.com/search/api](https://brave.com/search/api/).
+   - Developer accounts include free monthly credits and tiered usage (check official pricing and allowances at brave.com/search/api).
    - Enter your subscription token in **Parent Settings → Web Research**.
 2. **Private SearXNG**:
    - Host your own SearXNG container (included in `docker-compose.yml`).

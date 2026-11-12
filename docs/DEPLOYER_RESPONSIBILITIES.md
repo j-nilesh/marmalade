@@ -17,7 +17,9 @@ When using third-party AI APIs (such as Anthropic or OpenAI), the API account be
   - You must accept Anthropic Commercial Terms and review their minors guidance.
   - Marmalade automatically handles content filtering, system prompts, and AI disclosure, but you must ensure your household or school account complies with their policies.
 - **OpenAI:**
-  - For children under 13, OpenAI requires Zero Data Retention (ZDR) to be requested and approved on your organization account. Do not enable OpenAI for an under-13 child without confirming ZDR status with OpenAI.
+  - You must accept OpenAI Terms of Use and follow their Under-18 API Guidance.
+  - Recommended models are safety-aligned models such as `gpt-4o-mini` or `gpt-4o` with system instructions.
+  - For children under 13, you act as the parent operator providing consent under COPPA. OpenAI requires Zero Data Retention (ZDR) to be active on your organization account. Confirm your ZDR agreement directly with OpenAI before enabling OpenAI for under-13 children. Marmalade records parent acknowledgment; it cannot verify account retention contracts via API.
 - **Google Gemini:**
   - Do **not** attempt to bypass Marmalade’s gate to connect Gemini to child workspaces. Gemini terms explicitly prohibit use by minors.
 - **Local Models (Ollama):**

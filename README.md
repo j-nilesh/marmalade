@@ -155,7 +155,7 @@ No streaks, no infinite feed, nothing built to keep them there one more minute.
 
 | Automated Tests Passing | Outbound Network Requests in Demo Mode | Remote Scripts or Fonts Loaded | Supported Age Range |
 | :---: | :---: | :---: | :---: |
-| **128** | **0** | **0** | **6 to 16** |
+| **139** | **0** | **0** | **6 to 16** |
 
 Measured on commit `8a34289` in Demo Mode. Test results, not a guarantee. [Run the checks yourself](#run-the-checks-yourself).
 
@@ -272,7 +272,9 @@ Open **`http://localhost:4120`** in your browser.
 
 <h3 id="try-demo-mode-in-2-minutes">Try Demo Mode in 2 minutes</h3>
 
-On fresh launch, complete the 60-second first-run setup. Select **Demo Mode** in Parent Settings to explore the treehouse with full sample responses and zero API keys required.
+1. **Initialize your household (60 seconds):** Open `http://localhost:4120` to set your parent password, your child's username, and your family's time zone. (If `SETUP_TOKEN` is configured on your server, enter it during setup).
+2. **Instant Demo Mode:** Marmalade starts automatically in **Demo Mode** with built-in sample responses for Ask, Research, Schoolwork, and Play. No API keys, credit cards, or external services are needed to explore.
+3. **Connect real AI when ready:** Visit Parent Settings (`/parent`) anytime to connect free offline Ollama or a commercial provider (Anthropic Claude or OpenAI).
 
 <details>
 <summary><strong>Run from source with Node.js</strong></summary>

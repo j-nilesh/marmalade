@@ -107,9 +107,9 @@ export const PROVIDER_POLICY_MATRIX: Record<string, ProviderPolicyDefinition> = 
     guidanceUrl:
       'https://developers.openai.com/api/docs/guides/safety-checks/under-18-api-guidance',
     termsEffectiveDate: 'February 2025 (Guidance updated 2026)',
-    lastCheckedDate: '4 November 2026',
+    lastCheckedDate: '12 November 2026',
     summary:
-      'OpenAI allows under-18 use with age-appropriate filtering, AI disclosure, and current flagship models. For children under 13, Zero Data Retention (ZDR) must be requested from OpenAI.',
+      'OpenAI permits under-18 use when age-appropriate filtering, AI disclosure, and safety-aligned models (such as GPT-4o or GPT-4o-mini) are configured. For children under 13, Zero Data Retention (ZDR) must be active on your OpenAI account.',
     conditionsChecklist: [
       {
         id: 'age_filters',
@@ -129,26 +129,26 @@ export const PROVIDER_POLICY_MATRIX: Record<string, ProviderPolicyDefinition> = 
       },
       {
         id: 'flagship_model',
-        label: 'Current flagship model configuration',
+        label: 'Safety-aligned model configuration',
         description:
-          'Configured to current safety-aligned models (e.g., GPT-4o, GPT-4o-mini).',
+          'Configured to safety-aligned models (e.g., GPT-4o, GPT-4o-mini) with system instructions.',
         satisfiedByMarmalade: true,
         satisfiedBySprout: true,
       },
       {
         id: 'under_13_zdr',
-        label: 'Under-13 Zero Data Retention approval',
+        label: 'Under-13 Zero Data Retention parent acknowledgment',
         description:
-          'If the child using this workspace is under 13, Zero Data Retention (ZDR) must be requested and active on your OpenAI account.',
+          'If the child using this workspace is under 13, Zero Data Retention (ZDR) must be active on your OpenAI account. Marmalade records parent acknowledgment; account retention terms cannot be independently verified via API.',
         satisfiedByMarmalade: false,
         satisfiedBySprout: false,
-        requiredParentAction: 'Confirm ZDR status for under-13 use',
+        requiredParentAction: 'Acknowledge ZDR status for under-13 use',
       },
       {
         id: 'parental_supervision',
-        label: 'Parental supervision confirmation',
+        label: 'Parental supervision acknowledgment',
         description:
-          'I confirm that I supervise this connection under OpenAI API Terms of Use.',
+          'I confirm that as the supervising parent or guardian, I authorize and supervise this connection under OpenAI API Terms of Use.',
         satisfiedByMarmalade: false,
         satisfiedBySprout: false,
         requiredParentAction: 'Confirm supervision under OpenAI terms',
@@ -161,7 +161,7 @@ export const PROVIDER_POLICY_MATRIX: Record<string, ProviderPolicyDefinition> = 
     minorsStatus: 'allowed_with_conditions',
     termsUrl: 'https://legal.mistral.ai/terms/commercial-terms-of-service',
     termsEffectiveDate: '2025',
-    lastCheckedDate: '4 November 2026',
+    lastCheckedDate: '12 November 2026',
     summary:
       'Mistral requires legally adequate parental consent and prohibits transmitting personal information of children under 13 (or local digital consent age) as customer data.',
     conditionsChecklist: [
@@ -175,7 +175,7 @@ export const PROVIDER_POLICY_MATRIX: Record<string, ProviderPolicyDefinition> = 
       },
       {
         id: 'parental_consent',
-        label: 'Parental consent verified',
+        label: 'Parental consent acknowledged',
         description:
           'Supervising parent confirms consent to process non-PII queries on Mistral API.',
         satisfiedByMarmalade: false,

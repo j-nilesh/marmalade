@@ -4,7 +4,9 @@
 #   1. Copy this file: cp fly.example.toml fly.toml
 #   2. Choose a unique app name in fly.toml (e.g. app = "smith-family-marmalade")
 #   3. Create your persistent SQLite volume: fly volumes create marmalade_data --size 1
-#   4. Deploy: fly deploy
+#   4. (Recommended) Set setup token secret to protect first-run initialization:
+#      fly secrets set SETUP_TOKEN="your-random-passphrase"
+#   5. Deploy: fly deploy
 
 app = "my-family-marmalade"
 primary_region = "iad"

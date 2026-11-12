@@ -27,9 +27,9 @@ export class OpenAIModelProvider implements ModelProvider {
       return 'Requires server-side OPENAI_API_KEY. Never exposed to child or browser client.';
     }
     if (!this.zeroDataRetentionApproved) {
-      return 'API key set. A parent must review the provider’s data handling before enabling child sessions.';
+      return 'API key set. A parent must review the provider’s data handling and acknowledge ZDR status before enabling child sessions.';
     }
-    return 'OpenAI API configured with parent acknowledgment and server-side Moderation checks.';
+    return 'OpenAI API configured with parent data-handling acknowledgment and server-side Moderation checks. (Retention terms must be verified directly with OpenAI).';
   }
 
   readonly capabilities: ProviderCapabilities = {
@@ -89,8 +89,8 @@ export class OpenAIModelProvider implements ModelProvider {
         reachable: true,
         modelFound: true,
         details: this.zeroDataRetentionApproved
-          ? `OpenAI API connected successfully with model '${this.modelName}'. Parent acknowledgment recorded; retention is not independently verified.`
-          : `OpenAI API connected, but parent data-handling acknowledgment is missing.`,
+          ? `OpenAI API connected successfully with model '${this.modelName}'. Parent data-handling acknowledgment recorded. (Note: Account retention terms cannot be independently verified via API; confirm ZDR in your OpenAI organization settings).`
+          : `OpenAI API credentials valid and endpoint reachable, but parent data-handling acknowledgment is required before child use.`,
         capabilities: this.capabilities,
       };
     } catch (err: any) {
