@@ -63,13 +63,13 @@
 
 Looking to contribute to Marmalade? Here are starter issues for new contributors:
 
-1. **New Trivia Pack**: Add a curated 10-question trivia pack on oceans, space exploration, or ancient history in `src/server/activities/engine.ts`.
-2. **Translated Crisis Helplines**: Add regional youth crisis and support helplines for an additional country or language in `src/shared/safety.ts`.
-3. **Quiet Hours UI Stub**: Build a parent settings interface component for bedtime/school blackout schedules.
-4. **Documentation & Self-Hosting Guide**: Improve or clarify setup documentation for unRAID, TrueNAS, or Synology NAS deployments in `SELF_HOSTING.md`.
-5. **Raspberry Pi 5 Test Report**: Test and document performance benchmarks running Marmalade with local Ollama (`llama3.2:1b` or `llama3.2:3b`) on Raspberry Pi 5.
+1. **New Trivia Pack** ([#2](https://github.com/j-nilesh/marmalade/issues/2)): Add a curated 10-question trivia pack on oceans, space exploration, or ancient history in `src/server/activities/engine.ts`.
+2. **Translated Crisis Helplines** ([#3](https://github.com/j-nilesh/marmalade/issues/3)): Add regional youth crisis and support helplines for an additional country or language in `src/shared/safety.ts`.
+3. **Quiet Hours UI Stub** ([#4](https://github.com/j-nilesh/marmalade/issues/4)): Build a parent settings interface component for bedtime/school blackout schedules.
+4. **Documentation & Self-Hosting Guide** ([#5](https://github.com/j-nilesh/marmalade/issues/5)): Improve or clarify setup documentation for unRAID, TrueNAS, or Synology NAS deployments in `SELF_HOSTING.md`.
+5. **Raspberry Pi 5 Test Report** ([#6](https://github.com/j-nilesh/marmalade/issues/6)): Test and document performance benchmarks running Marmalade with local Ollama (`llama3.2:1b` or `llama3.2:3b`) on Raspberry Pi 5.
 
-*(Once issues are opened on GitHub, they will be tracked under the [`good first issue`](https://github.com/j-nilesh/marmalade/labels/good%20first%20issue) label).*
+Track all beginner-friendly tasks under the [`good first issue`](https://github.com/j-nilesh/marmalade/labels/good%20first%20issue) label.
 
 ---
 
