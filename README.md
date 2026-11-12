@@ -152,7 +152,7 @@ It doesn't rely on reading the child's chats; limits are enforced by the server.
 
 ## 👤 Who made this
 
-Built by Nilesh Jahagirdar ([nileshj.com](NILESH_SITE_URL)) for his own family. My daughter uses it every day.
+Built by Nilesh Jahagirdar ([nileshj.com](https://nileshj.com)) for his own family. My daughter uses it every day.
 
 ---
 
