@@ -85,7 +85,7 @@ Five rooms, each with a job and a natural end.
 | **Time budgets and cooldowns.** | Daily minutes and breaks you choose. |
 | **Spend caps.** | A monthly cost limit on cloud models. |
 | **Safety alerts, not transcripts.** | You see a category and a time, never the words. |
-| **Help comes first.** | Crisis messages show helplines right away (US/Canada 988, UK 111 / 0800 1111, India 14416 / 1098, International findahelpline.com), and alerts are held back when the disclosure concerns a grown-up at home. |
+| **Help comes first.** | Crisis messages show helplines right away (US/Canada 988, UK 111 / 0800 1111, India 14416 / 1098, International findahelpline.com), and parent alerts are held back for any disclosure of abuse or unsafe contact. |
 
 Why no transcript reader? [Read the design note in THREAT_MODEL.md](docs/THREAT_MODEL.md).
 
@@ -322,7 +322,7 @@ npm run readme:assets
 [![Marmalade heading: Build with us, community and contribution links.](docs/assets/readme/heading-community.webp#gh-light-mode-only)](#build-with-us)
 [![Marmalade heading: Build with us, community and contribution links.](docs/assets/readme/heading-community-dark.webp#gh-dark-mode-only)](#build-with-us)
 
-Marmalade is built collaboratively by parents, educators, and software engineers who believe children deserve private, bounded technology.
+Marmalade is built by a parent, with AI coding tools, for his own daughter first. Issues and pull requests are welcome.
 
 [Contributing guide](CONTRIBUTING.md) · [Good first issues](https://github.com/j-nilesh/marmalade/labels/good%20first%20issue) · [GitHub Discussions](https://github.com/j-nilesh/marmalade/discussions) · [Report a bug](https://github.com/j-nilesh/marmalade/issues) · [Security policy](SECURITY.md)
 
