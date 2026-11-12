@@ -21,8 +21,8 @@ Marmalade enforces privacy and security at the server level:
 
 1. **Authentication & Session Security**:
    - Separate parent and child roles with `scrypt` password hashing and per-user cryptographic salts.
-   - Session tokens are hashed with SHA-256 and stored in SQLite, delivered in `HttpOnly`, `SameSite=Lax` cookies (`marmalade_session` with fallback to `sprout_session`).
-   - Dedicated CSRF protection header (`X-Marmalade-CSRF`, `X-Sprout-CSRF`, or `x-csrf-token`) is enforced on all mutating requests.
+   - Session tokens are hashed with SHA-256 and stored in SQLite, delivered in `HttpOnly`, `SameSite=Lax` cookies (`marmalade_session`, with fallback to `sprout_session` (legacy, from the pre-rename build)).
+   - Dedicated CSRF protection header (`X-Marmalade-CSRF`, with fallback to `X-Sprout-CSRF` (legacy, from the pre-rename build), or `x-csrf-token`) is enforced on all mutating requests.
    - Parent sessions automatically time out after 15 minutes of inactivity (`PARENT_SESSION_TTL_MS`).
    - Brute-force protection tracks failed attempts per client IP and per `(IP + username)` pair with bounded memory sweeps.
    - Sensitive AI provider API keys are encrypted at rest with AES-256-GCM using an instance secret generated on first run.
