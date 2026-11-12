@@ -598,7 +598,7 @@ export function ParentWorkspace({
                 className={settingsTab === 'search' ? 'primary' : ''}
                 onClick={() => setSettingsTab('search')}
               >
-                🦁 Brave Web Search
+                Web Research (Search)
               </button>
             </div>
             {(settingsTab === 'all' || settingsTab === 'ai') && (

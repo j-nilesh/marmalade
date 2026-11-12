@@ -359,7 +359,7 @@ export function ProviderSettings({
                       GPT-4o Mini (Fast, capable everyday model &amp; low API cost)
                     </option>
                     <option value="gpt-4o">
-                      GPT-4o (High-intelligence flagship model)
+                      GPT-4o (High-intelligence multimodal model)
                     </option>
                   </select>
                 )}
@@ -385,7 +385,7 @@ export function ProviderSettings({
                     ✓ <strong>AI disclosure:</strong> Child workspace informs the student they are interacting with an AI.
                   </li>
                   <li className="satisfied">
-                    ✓ <strong>Flagship safety alignment:</strong> Using current safety-aligned models (GPT-4o / GPT-4o-mini).
+                    ✓ <strong>Safety alignment:</strong> Using current safety-aligned models (GPT-4o / GPT-4o-mini).
                   </li>
                 </ul>
 
@@ -395,7 +395,9 @@ export function ProviderSettings({
                     checked={openaiUnder13Confirmed}
                     onChange={(e) => setOpenaiUnder13Confirmed(e.target.checked)}
                   />
-                  <strong>Under-13 Zero Data Retention:</strong> If your child is under 13, confirm that Zero Data Retention (ZDR) has been approved on your OpenAI account.
+                  <span>
+                    <strong>Under-13 Zero Data Retention (Parent Acknowledgment):</strong> If your child is under 13, confirm that Zero Data Retention (ZDR) has been approved on your OpenAI account. <em>(Marmalade tests API connectivity, not provider account contracts.)</em>
+                  </span>
                 </label>
 
                 <label className="check required-ack">
@@ -405,7 +407,9 @@ export function ProviderSettings({
                     onChange={(e) => setOpenaiConsent(e.target.checked)}
                     required
                   />
-                  <strong>Parental Supervision:</strong> I confirm that I supervise this connection under OpenAI API Terms of Use.
+                  <span>
+                    <strong>Parental Supervision:</strong> I confirm that I supervise this connection under OpenAI API Terms of Use.
+                  </span>
                 </label>
               </div>
             </>
@@ -751,7 +755,7 @@ export function SearchSettings({
         excerpts are then sent to the AI to help answer the question.
       </p>
       <p className="muted">
-        Connect either <strong>Brave Search API</strong> (2,000 free searches/month with zero hosting) or a private <strong>SearXNG</strong> JSON service.
+        Connect either <strong>Brave Search API</strong> (developer account with monthly credit allowance) or a private <strong>SearXNG</strong> JSON service.
       </p>
 
       {/* Search Provider Selector Tabs */}
@@ -781,10 +785,10 @@ export function SearchSettings({
       {isBrave && (
         <div className="provider-policy-card policy-allowed" style={{ marginBottom: '16px' }}>
           <strong>Brave Search API: </strong>
-          <span>Provides independent web index with zero tracking. Free tier includes 2,000 free queries per month.</span>
+          <span>Provides an independent web index with zero tracking. Developer account plans include free monthly credits (subject to Brave terms). Check current pricing and allowances at <a href="https://brave.com/search/api/" target="_blank" rel="noopener noreferrer">brave.com/search/api ↗</a>.</span>
           <p className="policy-links" style={{ margin: '8px 0 0 0' }}>
             <a href="https://brave.com/search/api/" target="_blank" rel="noopener noreferrer">
-              Get free Brave Search API key at brave.com/search/api ↗
+              Get Brave Search API key at brave.com/search/api ↗
             </a>
           </p>
         </div>

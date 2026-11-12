@@ -1,5 +1,25 @@
 # Changelog
 
+## 1.2.2 — 2026-11-12
+
+- **Protected First-Run Setup (`SETUP_TOKEN`)**:
+  - Added a dedicated setup-token input to the initial family initialization screen when `SETUP_TOKEN` is configured on the instance.
+  - Eliminated token transmission in URL query strings to avoid leaking secrets in reverse-proxy or web server access logs; tokens are accepted strictly via the JSON request body or `x-setup-token` header.
+  - Kept `/api/bootstrap` non-leaking (`setupTokenRequired: boolean`).
+  - Added test suite covering protected setup, wrong-token rejection, header/body transmission, query-param rejection, and replay protection.
+- **Docker Networking & Default Security**:
+  - Defaulted `docker-compose.yml` host port binding to `127.0.0.1:4120:4120` (`${MARMALADE_BIND_IP:-127.0.0.1}`) to prevent unintended exposure on public networks.
+  - Documented LAN configuration (`MARMALADE_BIND_IP=0.0.0.0`) for home Wi-Fi access alongside reverse-proxy (Caddy, Nginx, Cloudflare Tunnel) configurations for public VPS deployments.
+  - Recommended `SETUP_TOKEN` across `fly.example.toml`, `render.yaml`, and self-hosting documentation.
+- **Honest Onboarding & Quickstart Accuracy**:
+  - Clarified the first-run experience in `README.md` and `SELF_HOSTING.md`: launch container -> 60-second household setup (parent & child logins) -> instant Demo Mode with zero API keys required.
+- **Provider Compliance & Model Guidance Verification**:
+  - Aligned OpenAI descriptions with current Under-18 API Guidance: recommend safety-aligned models (`gpt-4o-mini`, `gpt-4o`) with system instructions, avoiding static "flagship" labels.
+  - Clarified COPPA parental consent and under-13 Zero Data Retention (ZDR) requirements for self-hosters.
+  - Clarified that ZDR status in the UI represents parent self-acknowledgment and preflight connectivity testing, rather than independent API-level contract verification.
+- **Search Pricing Claims**:
+  - Corrected Brave Search API documentation to reference developer credit plans and official pricing at `brave.com/search/api` rather than an outdated fixed 2,000 queries per month allowance.
+
 ## 1.2.1 — 2026-11-11
 
 - **Finalized Marmalade Project Rename**:

@@ -37,9 +37,9 @@ export class AnthropicModelProvider implements ModelProvider {
       return 'Requires server-side ANTHROPIC_API_KEY. Never exposed to child or browser client.';
     }
     if (!this.zeroDataRetentionApproved) {
-      return 'API key set. A parent must review the provider’s data handling before enabling child sessions.';
+      return 'API key set. A parent must review the provider’s data handling and accept terms before enabling child sessions.';
     }
-    return `Anthropic Claude configured with parent acknowledgment (Model: ${this.modelName}).`;
+    return `Anthropic Claude configured with parent authorization (Model: ${this.modelName}). Terms governed directly by your Anthropic account.`;
   }
 
   readonly capabilities: ProviderCapabilities = {
@@ -154,7 +154,7 @@ export class AnthropicModelProvider implements ModelProvider {
         reachable: true,
         modelFound: true,
         details: this.zeroDataRetentionApproved
-          ? `Anthropic Claude API connected successfully with model '${this.modelName}'. Parent data handling review recorded.`
+          ? `Anthropic Claude API connected successfully with model '${this.modelName}'. Parent data handling review recorded. (Note: Account retention terms are governed directly by Anthropic; they cannot be verified via API).`
           : `Anthropic Claude API connected, but parent data-handling acknowledgment is missing.`,
         capabilities: this.capabilities,
       };

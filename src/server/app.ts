@@ -510,13 +510,12 @@ export function createMarmaladeApp(
 
     const body = await c.req.json().catch(() => ({}));
 
-    // Enforce setup token if configured on instance
+    // Enforce setup token if configured on instance (body or x-setup-token header only; query params rejected to avoid URL logging)
     const requiredSetupToken = process.env.SETUP_TOKEN?.trim();
     if (requiredSetupToken) {
       const providedToken =
         (typeof body.setupToken === 'string' ? body.setupToken.trim() : '') ||
-        c.req.header('x-setup-token')?.trim() ||
-        c.req.query('token')?.trim();
+        c.req.header('x-setup-token')?.trim();
       if (!providedToken || providedToken !== requiredSetupToken) {
         return c.json(
           {

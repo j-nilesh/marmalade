@@ -16,6 +16,7 @@ import type { UserPublic } from '../shared/types';
 
 type Bootstrap = {
   initialized: boolean;
+  setupTokenRequired?: boolean;
   user: UserPublic | null;
   csrfToken: string | null;
   policy: any;
@@ -105,7 +106,10 @@ export function App() {
         <div className="auth-nav">
           <Brand />
         </div>
-        <FamilySetup onDone={() => authenticated(true)} />
+        <FamilySetup
+          setupTokenRequired={Boolean(boot.setupTokenRequired)}
+          onDone={() => authenticated(true)}
+        />
       </div>
     );
   if (!boot.user)
@@ -221,8 +225,15 @@ function SignIn({ onDone }: { onDone: () => Promise<void> }) {
     </section>
   );
 }
-function FamilySetup({ onDone }: { onDone: () => Promise<void> }) {
+function FamilySetup({
+  setupTokenRequired = false,
+  onDone,
+}: {
+  setupTokenRequired?: boolean;
+  onDone: () => Promise<void>;
+}) {
   const action = useAction();
+  const [setupToken, setSetupToken] = useState('');
   const [data, setData] = useState({
     parentUsername: 'parent',
     parentDisplayName: 'Parent',
@@ -261,11 +272,33 @@ function FamilySetup({ onDone }: { onDone: () => Promise<void> }) {
                 );
               }
             }
-            await api('/setup', 'POST', data);
+            const payload: Record<string, unknown> = { ...data };
+            if (setupToken.trim()) {
+              payload.setupToken = setupToken.trim();
+            }
+            await api('/setup', 'POST', payload);
             await onDone();
           });
         }}
       >
+        {setupTokenRequired && (
+          <fieldset style={{ marginBottom: '1.5rem' }}>
+            <legend>Deployment security</legend>
+            <Field
+              label="Setup token"
+              hint="This instance is protected against unauthorized setup. Enter the SETUP_TOKEN configured on your server."
+            >
+              <input
+                type="password"
+                required
+                autoComplete="off"
+                value={setupToken}
+                onChange={(e) => setSetupToken(e.target.value)}
+                placeholder="Enter setup token from server environment"
+              />
+            </Field>
+          </fieldset>
+        )}
         <div className="form-columns">
           <fieldset>
             <legend>Your parent account</legend>

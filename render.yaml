@@ -13,6 +13,9 @@ services:
         value: 0.0.0.0
       - key: MARMALADE_DB_PATH
         value: /app/data/marmalade.db
+      # Highly recommended: Set SETUP_TOKEN to protect initial household setup on public URLs
+      # - key: SETUP_TOKEN
+      #   generateValue: true
     healthCheckPath: /api/bootstrap
     disk:
       name: marmalade-sqlite-data
